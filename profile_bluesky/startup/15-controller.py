@@ -56,7 +56,6 @@ class Controller(Device):
         print(f"wait = {wait}")
         
         if wait:
-            print("Waiting ...")
 
             _st = DeviceStatus(self.temperature, timeout=timeout)
             started = False
@@ -69,23 +68,20 @@ class Controller(Device):
             started = True
             
             t0 = time.time()
-            report = time.time() + self.report_interval
-            try:
-                while not _st.done:
-                    if time.time() >= report:
-                        report += self.report_interval
-                        elapsed = time.time() - t0
-                        msg = f"Waiting {elapsed:.1f}s"
-                        msg += f" to reach {set_point:.2f}C"
-                        msg += f", now {self.temperature.get():.2f}C"
-                        print(msg)
-                    yield from bps.sleep(0.02)
-            except (AttributeError, TimeoutError) as exc:
-                print("Timeout before settling!")
-            finally:
-                self.record_temperature()
-                elapsed = time.time() - t0
-                print(f"Total time: {elapsed:.3f}s, settled:{_st.success}")
+            report = time.time()
+            # see: https://stackoverflow.com/questions/2829329/catch-a-threads-exception-in-the-caller-thread-in-python
+            while not _st.done:
+                if time.time() >= report:
+                    report += self.report_interval
+                    elapsed = time.time() - t0
+                    msg = f"Waiting {elapsed:.1f}s"
+                    msg += f" to reach {set_point:.2f}C"
+                    msg += f", now {self.temperature.get():.2f}C"
+                    print(msg)
+                yield from bps.sleep(0.02)
+            self.record_temperature()
+            elapsed = time.time() - t0
+            print(f"Total time: {elapsed:.3f}s, settled:{_st.success}")
             self.temperature.unsubscribe(token)
 
 
