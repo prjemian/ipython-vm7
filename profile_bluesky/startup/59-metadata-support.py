@@ -3,6 +3,8 @@ print(__file__)
 
 """code that will become part of apstools"""
 
+import pyRestTable
+
 def dictionary_table(dictionary, fmt="simple"):
     """
     return a text table from ``dictionary``
