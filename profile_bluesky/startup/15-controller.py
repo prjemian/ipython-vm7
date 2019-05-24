@@ -26,18 +26,17 @@ class Controller(Device):
     temperature = Component(EpicsSignalRO, ".VAL")
     set_limit = Component(EpicsSignal, ".C", kind="omitted")
     smoothing_factor = Component(EpicsSignal, ".B", kind="omitted")
-    pretty_close = Component(EpicsSignal, ".D", kind="omitted")
+    tolerance = Component(EpicsSignal, ".D", kind="omitted")
     
-    close_enough  = 1       # requirement: |T - target| must be <= this, degree C
     report_interval  = 5    # time between reports during loop, s
     poll_s = 0.02           # time to wait during polling loop, s
     
     wait_time = Component(Signal, kind="omitted", value=0)
     
-    def settled(self, target, close_enough=None):
+    def settled(self):
         """Is temperature close enough to target?"""
-        close_enough = self.pretty_close.value
-        return abs(self.temperature.get() - target) <= close_enough
+        diff = abs(self.temperature.get() - self.set_limit.value)
+        return diff <= self.tolerance.value
 
     def record_temperature(self):
         """write temperatures as comment"""
@@ -56,17 +55,16 @@ class Controller(Device):
         
         if wait:
             yield from self.wait_until_settled(
-                set_point, 
                 timeout=timeout, 
                 timeout_fail=timeout_fail)
 
-    def wait_until_settled(self, set_point, timeout=None, timeout_fail=False):
+    def wait_until_settled(self, timeout=None, timeout_fail=False):
         # see: https://stackoverflow.com/questions/2829329/catch-a-threads-exception-in-the-caller-thread-in-python
         _st = DeviceStatus(self.temperature)
         started = False
 
         def changing_cb(value, timestamp, **kwargs):
-            if started and self.settled(set_point):
+            if started and self.settled():
                 _st._finished(success=True)
 
         token = self.temperature.subscribe(changing_cb)
@@ -79,7 +77,7 @@ class Controller(Device):
             if timeout is not None and elapsed > timeout:
                 _st._finished(success=False)
                 msg = f"Temperature Controller Timeout after {elapsed:.2f}s"
-                msg += f", target {set_point:.2f}C"
+                msg += f", target {self.set_limit.value:.2f}C"
                 msg += f", now {self.temperature.get():.2f}C"
                 # msg += f", status={_st}"
                 print(msg)
@@ -89,7 +87,7 @@ class Controller(Device):
             if elapsed >= report:
                 report += self.report_interval
                 msg = f"Waiting {elapsed:.1f}s"
-                msg += f" to reach {set_point:.2f}C"
+                msg += f" to reach {self.set_limit.value:.2f}C"
                 msg += f", now {self.temperature.get():.2f}C"
                 print(msg)
             yield from bps.sleep(0.02)
@@ -111,10 +109,10 @@ def tester():
     calcout.d.put(0.05)
     calcout.scan.put("1 second")
 
-    controller.wait_until_settled(0, timeout=10)
+    controller.wait_until_settled(timeout=10)
 
     controller.record_temperature()
-    controller.settled(0)
+    controller.settled()
     
     def test_plan():
         yield from controller.set_temperature(25, timeout=10)
