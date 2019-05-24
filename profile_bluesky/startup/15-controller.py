@@ -60,6 +60,7 @@ class Controller(Device):
 
     def wait_until_settled(self, timeout=None, timeout_fail=False):
         # see: https://stackoverflow.com/questions/2829329/catch-a-threads-exception-in-the-caller-thread-in-python
+        t0 = time.time()
         _st = DeviceStatus(self.temperature)
         started = False
 
@@ -70,7 +71,6 @@ class Controller(Device):
         token = self.temperature.subscribe(changing_cb)
         started = True
         
-        t0 = time.time()
         report = 0
         while not _st.done:
             elapsed = time.time() - t0
