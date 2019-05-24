@@ -40,7 +40,7 @@ class Controller(Device):
 
     def record_temperature(self):
         """write temperatures as comment"""
-        msg = f"Controller Temperature: {self.temperature.value:.3f} C"
+        msg = f"Controller Temperature: {self.temperature.value:.2f} C"
         spec_comment(msg)
         print(msg)
 
@@ -49,7 +49,7 @@ class Controller(Device):
         yield from bps.mv(self.set_limit, set_point)
         yield from bps.sleep(0.1)   # delay for slow IOC
 
-        msg = f"Controller Set Temperature changed to {set_point} C"
+        msg = f"Setting Controller Temperature to {set_point:.2f} C"
         print(msg)
         spec_comment(msg)
         
