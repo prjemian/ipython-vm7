@@ -45,7 +45,7 @@ class Controller(Device):
         spec_comment(msg)
         print(msg)
 
-    def set_temperature(self, set_point, wait=True, timeout=None):
+    def set_temperature(self, set_point, wait=True, timeout=None, timeout_fail=False):
         """change controller to new temperature set point"""
         yield from bps.mv(self.set_limit, set_point)
         yield from bps.sleep(0.1)   # delay for slow IOC
@@ -53,41 +53,56 @@ class Controller(Device):
         msg = f"Controller Set Temperature changed to {set_point} C"
         print(msg)
         spec_comment(msg)
-        print(f"wait = {wait}")
         
         if wait:
+            yield from self.wait_until_settled(
+                set_point, 
+                timeout=timeout, 
+                timeout_fail=timeout_fail)
 
-            _st = DeviceStatus(self.temperature, timeout=timeout)
-            started = False
+    def wait_until_settled(self, set_point, timeout=None, timeout_fail=False):
+        # see: https://stackoverflow.com/questions/2829329/catch-a-threads-exception-in-the-caller-thread-in-python
+        _st = DeviceStatus(self.temperature)
+        started = False
 
-            def changing_cb(value, timestamp, **kwargs):
-                if started and self.settled(set_point):
-                    _st._finished()
+        def changing_cb(value, timestamp, **kwargs):
+            if started and self.settled(set_point):
+                _st._finished(success=True)
 
-            token = self.temperature.subscribe(changing_cb)
-            started = True
-            
-            t0 = time.time()
-            report = time.time()
-            # see: https://stackoverflow.com/questions/2829329/catch-a-threads-exception-in-the-caller-thread-in-python
-            while not _st.done:
-                if time.time() >= report:
-                    report += self.report_interval
-                    elapsed = time.time() - t0
-                    msg = f"Waiting {elapsed:.1f}s"
-                    msg += f" to reach {set_point:.2f}C"
-                    msg += f", now {self.temperature.get():.2f}C"
-                    print(msg)
-                yield from bps.sleep(0.02)
-            self.record_temperature()
+        token = self.temperature.subscribe(changing_cb)
+        started = True
+        
+        t0 = time.time()
+        report = 0
+        while not _st.done:
             elapsed = time.time() - t0
-            print(f"Total time: {elapsed:.3f}s, settled:{_st.success}")
-            self.temperature.unsubscribe(token)
+            if timeout is not None and elapsed > timeout:
+                _st._finished(success=False)
+                msg = f"Temperature Controller Timeout after {elapsed:.2f}s"
+                msg += f", target {set_point:.2f}C"
+                msg += f", now {self.temperature.get():.2f}C"
+                # msg += f", status={_st}"
+                print(msg)
+                if timeout_fail:
+                    raise TimeoutError(msg)
+                continue
+            if elapsed >= report:
+                report += self.report_interval
+                msg = f"Waiting {elapsed:.1f}s"
+                msg += f" to reach {set_point:.2f}C"
+                msg += f", now {self.temperature.get():.2f}C"
+                print(msg)
+            yield from bps.sleep(0.02)
+        self.record_temperature()
+        elapsed = time.time() - t0
+        print(f"Total time: {elapsed:.3f}s, settled:{_st.success}")
+        self.temperature.unsubscribe(token)
 
+calcout = Calcout("vm7:userCalcOut9", name="calcout")
+controller = Controller("vm7:userCalcOut9", name="controller")
 
-if False:
+def tester():
     # config a calcout record as a pseudo controller
-    calcout = Calcout("vm7:userCalcOut9", name="calcout")
     calcout.desc.put("userCalcOut9")
     calcout.calc.put("A*B+(1-B)*C")
     calcout.inpa.put("vm7:userCalcOut9.VAL")
@@ -96,12 +111,14 @@ if False:
     calcout.d.put(0.05)
     calcout.scan.put("1 second")
 
-    for i in range(10, 0, -1):
-        print(i)
-        time.sleep(1)
+    controller.wait_until_settled(0, timeout=10)
 
-    controller = Controller("vm7:userCalcOut9", name="controller")
     controller.record_temperature()
     controller.settled(0)
-    RE(controller.set_temperature(25, timeout=10))
-    RE(controller.set_temperature(0, timeout=4))
+    
+    def test_plan():
+        yield from controller.set_temperature(25, timeout=10)
+        controller.report_interval = 1.1
+        yield from controller.set_temperature(0, timeout=4)
+    
+    RE(test_plan())
