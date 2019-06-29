@@ -5,7 +5,7 @@ print(__file__)
 
 # example using an Excel file to provide a list of samples to scan
 
-def run_Excel_file(xl_file):
+def run_Excel_file(xl_file, md={}):
     """
     example of reading a list of samples from Excel spreadsheet
     
@@ -16,7 +16,7 @@ def run_Excel_file(xl_file):
     """
     assert os.path.exists(xl_file)
     xl = APS_utils.ExcelDatabaseFileGeneric(os.path.abspath(xl_file))
-    yield from beforePlan()
+    yield from beforePlan(md or {})
     for i, row in enumerate(xl.db.values()):
         scan_command = row["Scan Type"].lower()
         if scan_command == "step_scan":
@@ -30,7 +30,7 @@ def run_Excel_file(xl_file):
                 )
         else:
             print(f"no handling for table row {i+1}: {row}")
-    yield from afterPlan()
+    yield from afterPlan(md or {})
 
 
 def step_scan(pos_X, pos_Y, thickness, scan_title, md={}):
@@ -49,14 +49,14 @@ def step_scan(pos_X, pos_Y, thickness, scan_title, md={}):
     yield from bp.scan([scaler], m1, -5, 5, 8, md=md)
 
 
-def beforePlan():
+def beforePlan(md={}):
     """things to be done before every data collection plan"""
     yield from bps.mv(
         shutter, "open",    # for example
     )
 
     
-def afterPlan():
+def afterPlan(md={}):
     """things to be done after every data collection plan"""
     yield from bps.mv(
         shutter, "close",   # for example

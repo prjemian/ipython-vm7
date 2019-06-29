@@ -96,8 +96,8 @@ class Controller(Device):
         print(f"Total time: {elapsed:.3f}s, settled:{_st.success}")
         self.temperature.unsubscribe(token)
 
-calcout = Calcout("vm7:userCalcOut9", name="calcout")
-controller = Controller("vm7:userCalcOut9", name="controller")
+# calcout = Calcout("vm7:userCalcOut9", name="calcout")
+# controller = Controller("vm7:userCalcOut9", name="controller")
 
 def tester():
     # config a calcout record as a pseudo controller
