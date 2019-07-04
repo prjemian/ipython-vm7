@@ -1,6 +1,8 @@
 # ipython
 profile_*/history/
 
+# SPEC
+*.dat
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
