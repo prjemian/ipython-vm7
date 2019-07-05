@@ -25,9 +25,10 @@ del apstools_version
 RE.md['versions']['epics'] = epics.__version__
 RE.md['versions']['numpy'] = np.__version__
 from matplotlib import __version__ as mpl_version
-from matplotlib import __version__numpy__ as mpl_np_version
-RE.md['versions']['matplotlib.numpy'] = mpl_np_version
+RE.md['versions']['matplotlib'] = mpl_version
 del mpl_version
+from matplotlib import __version__numpy__ as mpl_np_version
+RE.md['versions']['matplotlib_numpy'] = mpl_np_version
 del mpl_np_version
 from spec2nexus import __version__ as s2n_version
 RE.md['versions']['spec2nexus'] = s2n_version
