@@ -7,8 +7,8 @@ from ophyd.areadetector.filestore_mixins import FileStoreTIFFIterativeWrite
 
 
 class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
-    # create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
-    ...
+    create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
+    # ...
 
 class MyTIFFPlugin(TIFFPlugin, FileStoreTIFFIterativeWrite):
     # create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
