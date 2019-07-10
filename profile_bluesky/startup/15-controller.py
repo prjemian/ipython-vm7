@@ -1,5 +1,4 @@
-
-print(__file__)
+logger.info(__file__)
 
 """mockup of Linkam temperature controller support"""
 

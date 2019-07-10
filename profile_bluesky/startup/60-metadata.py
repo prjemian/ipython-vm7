@@ -1,4 +1,4 @@
-print(__file__)
+logger.info(__file__)
 
 from datetime import datetime
 
@@ -27,12 +27,9 @@ RE.md['versions']['numpy'] = np.__version__
 from matplotlib import __version__ as mpl_version
 RE.md['versions']['matplotlib'] = mpl_version
 del mpl_version
-from matplotlib import __version__numpy__ as mpl_np_version
-RE.md['versions']['matplotlib_numpy'] = mpl_np_version
-del mpl_np_version
-from spec2nexus import __version__ as s2n_version
-RE.md['versions']['spec2nexus'] = s2n_version
-del s2n_version
+import spec2nexus
+RE.md['versions']['spec2nexus'] = spec2nexus.__version__
+import pyRestTable 
 RE.md['versions']['pyRestTable'] = pyRestTable.__version__
 
-print_RE_md()
+APS_utils.print_RE_md(RE.md)
