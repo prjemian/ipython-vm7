@@ -33,6 +33,6 @@ import pyRestTable
 RE.md['versions']['pyRestTable'] = pyRestTable.__version__
 
 logger.info(f"""
-RunEngine metadata dictionary: APS_utils.print_RE_md(RE.md):
-{APS_utils.print_RE_md(RE.md, printing=False)}
+RunEngine metadata dictionary: print_RE_md():
+{print_RE_md(printing=False)}
 """)

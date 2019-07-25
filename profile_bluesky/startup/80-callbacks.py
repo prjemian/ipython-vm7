@@ -16,20 +16,6 @@ logger.info(f"""
   to change SPEC file, use command:   newSpecFile('title')
 """)
 
-def show_ophyd_symbols(
-	show_pv=True, 
-	printing=True, 
-	verbose=False, 
-	symbols=None
-):
-	symbols = symbols or globals()
-	return APS_utils.show_ophyd_symbols(
-		show_pv=show_pv,
-		printing=printing,
-		verbose=verbose,
-		symbols=symbols
-	)
-
 logger.info(f"""
 Known ophyd structures: show_ophyd_symbols():
 {show_ophyd_symbols(printing=False)}

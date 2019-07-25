@@ -34,3 +34,26 @@ import apstools.utils as APS_utils
 # import specific methods by name, we need to customize them sometimes
 from apstools.devices import SimulatedApsPssShutterWithStatus
 from apstools.filewriters import SpecWriterCallback, spec_comment
+
+# wrap since both need access to global namespace
+
+def print_RE_md(dictionary=None, fmt='simple', printing=True):
+	return APS_utils.print_RE_md(
+		dictionary=dictionary or RE.md, 
+		fmt=fmt, 
+		printing=printing
+	)
+
+def show_ophyd_symbols(
+	show_pv=True, 
+	printing=True, 
+	verbose=False, 
+	symbols=None
+):
+	symbols = symbols or globals()
+	return APS_utils.show_ophyd_symbols(
+		show_pv=show_pv,
+		printing=printing,
+		verbose=verbose,
+		symbols=symbols
+	)
