@@ -32,4 +32,7 @@ RE.md['versions']['spec2nexus'] = spec2nexus.__version__
 import pyRestTable 
 RE.md['versions']['pyRestTable'] = pyRestTable.__version__
 
-APS_utils.print_RE_md(RE.md)
+logger.info(f"""
+RunEngine metadata dictionary: APS_utils.print_RE_md(RE.md):
+{APS_utils.print_RE_md(RE.md, printing=False)}
+""")
