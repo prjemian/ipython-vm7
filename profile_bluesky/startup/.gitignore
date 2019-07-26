@@ -1,0 +1,5 @@
+# output SPEC data files
+20*.dat
+
+# log files
+.ipython*.log*
