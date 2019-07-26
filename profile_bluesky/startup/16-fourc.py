@@ -13,7 +13,7 @@ MOTOR_PV_PHI = "vm7:m11"
 MOTOR_PV_TTH = "vm7:m12"
 
 
-class Fourc(E4CV):
+class FourCircleDiffractometer(E4CV):
     h = Component(PseudoSingle, '')
     k = Component(PseudoSingle, '')
     l = Component(PseudoSingle, '')
@@ -24,7 +24,7 @@ class Fourc(E4CV):
     tth =   Component(EpicsMotor, MOTOR_PV_TTH)
 
 
-fourc = Fourc('', name='fourc')
+fourc = FourCircleDiffractometer('', name='fourc')
 logger.info(f"{fourc.name} modes: {fourc.engine.modes}")
 fourc.calc.engine.mode = 'bissector'    # constrain tth = 2 * omega
 logger.info(f"selected mode: {fourc.calc.engine.mode}")
