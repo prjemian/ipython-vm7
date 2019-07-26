@@ -48,9 +48,10 @@ file_log_format += "%(message)s"
 file_log_handler.setFormatter(logging.Formatter(file_log_format))
 file_log_handler.formatter.default_msec_format = "%s.%03d"
 
-logger.warning('#'*60 + " startup")
-logger.warning('logging started')
-logger.warning(f'logging level = {logger.level}')
+logger.info('#'*60 + " startup")
+logger.info('logging started')
+logger.info(f'logging level = {logger.level}')
+logger.info(f'logging level = {logger.level}')
 
 # logger.debug('example Debug message')
 # logger.info('example Info message')
