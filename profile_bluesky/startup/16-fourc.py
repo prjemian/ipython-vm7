@@ -14,14 +14,14 @@ MOTOR_PV_TTH = "vm7:m12"
 
 
 class FourCircleDiffractometer(E4CV):
-    h = Component(PseudoSingle, '')
-    k = Component(PseudoSingle, '')
-    l = Component(PseudoSingle, '')
+    h = Component(PseudoSingle, '', labels=("hkl", "fourc"))
+    k = Component(PseudoSingle, '', labels=("hkl", "fourc"))
+    l = Component(PseudoSingle, '', labels=("hkl", "fourc"))
 
-    omega = Component(EpicsMotor, MOTOR_PV_OMEGA)
-    chi =   Component(EpicsMotor, MOTOR_PV_CHI)
-    phi =   Component(EpicsMotor, MOTOR_PV_PHI)
-    tth =   Component(EpicsMotor, MOTOR_PV_TTH)
+    omega = Component(EpicsMotor, MOTOR_PV_OMEGA, labels=("motor", "fourc"))
+    chi =   Component(EpicsMotor, MOTOR_PV_CHI, labels=("motor", "fourc"))
+    phi =   Component(EpicsMotor, MOTOR_PV_PHI, labels=("motor", "fourc"))
+    tth =   Component(EpicsMotor, MOTOR_PV_TTH, labels=("motor", "fourc"))
 
 
 fourc = FourCircleDiffractometer('', name='fourc')
