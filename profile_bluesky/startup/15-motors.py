@@ -11,4 +11,4 @@ m6 = EpicsMotor('vm7:m6', name='m6', labels=("motor",))
 m7 = EpicsMotor('vm7:m7', name='m7', labels=("motor",))
 m8 = EpicsMotor('vm7:m8', name='m8', labels=("motor",))
 
-m16 = EpicsMotor('vm7:m16', name='m16')
+m16 = EpicsMotor('vm7:m16', name='m16', labels=("motor",))
