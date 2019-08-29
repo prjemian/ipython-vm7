@@ -12,7 +12,7 @@ def action1():
 def catalog():
     table = pyRestTable.Table()
     table.labels = "symbol type".split()
-    for k, v in sorted(shell.items()):
+    for k, v in sorted(globals().items()):
         if k.startswith("_") or k in ("In",):
             continue
         table.addRow((k, type(v)))
