@@ -38,4 +38,4 @@ from apstools.filewriters import SpecWriterCallback, spec_comment
 from apstools.utils import print_RE_md
 from apstools.utils import show_ophyd_symbols
 
-sys.path.append(IPython.paths.get_ipython_dir())
+sys.path.append(os.path.join(IPython.paths.get_ipython_dir(), "user"))
