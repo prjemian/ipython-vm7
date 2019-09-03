@@ -28,7 +28,7 @@ import apstools.callbacks as APS_callbacks
 import apstools.devices as APS_devices
 import apstools.filewriters as APS_filewriters
 import apstools.plans as APS_plans
-import apstools.synApps_ophyd as APS_synApps_ophyd
+import apstools.synApps as APS_synApps
 import apstools.suspenders as APS_suspenders
 import apstools.utils as APS_utils
 
