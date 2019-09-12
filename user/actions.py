@@ -4,6 +4,8 @@ import IPython
 globals().update(IPython.get_ipython().user_ns)
 logger.info(__file__)
 
+from bluesky.callbacks.fitting import PeakStats
+from pyRestTable import Table
 
 def my_scan(count_time=1.0):
     mot = m1
@@ -35,11 +37,23 @@ def my_scan(count_time=1.0):
     #@bpp.stage_decorator([calc])
     @bpp.monitor_during_decorator(monitored_signals)
     def inner():
-        yield from bp.scan([peaky.calculated_value], mot, -2, 0, 41, md=md)
+        y_signal = peaky.calculated_value
+        x_signal = mot
+
+        ps = PeakStats(x_signal.name, y_signal.name)
+        RE.subscribe(ps)    # collects data during scan
+
+        yield from bp.scan([y_signal], x_signal, -2, 0, 41, md=md)
+
+        ps_dict = {k: ps.__getattribute__(k) for k in "min max cen com fwhm".split()}
+        tbl = Table()
+        tbl.labels = "PeakStats value".split()
+        tbl.rows = [[k, v] for k, v in sorted(ps_dict.items())]
+
         h = db[-1]
         print(f"scan_id={RE.md['scan_id']}")
         print(f"uid={h.start['uid']}")
-        # TODO: call PeakStats
+        print(tbl)
         calc.reset()
 
     return (yield from inner())
