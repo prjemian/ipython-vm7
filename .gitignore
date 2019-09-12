@@ -108,3 +108,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+profile_default/db/dhist
