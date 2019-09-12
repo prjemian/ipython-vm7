@@ -5,7 +5,7 @@ globals().update(IPython.get_ipython().user_ns)
 logger.info(__file__)
 
 from bluesky.callbacks.fitting import PeakStats
-from pyRestTable import Table
+import pyRestTable
 
 def my_scan(count_time=1.0):
     mot = m1
@@ -45,10 +45,12 @@ def my_scan(count_time=1.0):
 
         yield from bp.scan([y_signal], x_signal, -2, 0, 41, md=md)
 
-        ps_dict = {k: ps.__getattribute__(k) for k in "min max cen com fwhm".split()}
-        tbl = Table()
+        tbl = pyRestTable.Table()
         tbl.labels = "PeakStats value".split()
-        tbl.rows = [[k, v] for k, v in sorted(ps_dict.items())]
+        tbl.rows = [
+            [k, ps.__getattribute__(k)] 
+            for k in sorted("min max cen com fwhm".split())
+            ]
 
         h = db[-1]
         print(f"scan_id={RE.md['scan_id']}")
