@@ -1,5 +1,6 @@
 # ipython
 profile_*/history/
+db/
 
 # SPEC
 *.dat
