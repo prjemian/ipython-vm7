@@ -43,7 +43,7 @@ def my_scan(count_time=1.0):
         ps = PeakStats(x_signal.name, y_signal.name)
         RE.subscribe(ps)    # collects data during scan
 
-        yield from bp.scan([y_signal], x_signal, -2, 0, 41, md=md)
+        yield from bp.scan([y_signal, calc.calculated_value], x_signal, -2, 0, 41, md=md)
 
         tbl = pyRestTable.Table()
         tbl.labels = "PeakStats value".split()
