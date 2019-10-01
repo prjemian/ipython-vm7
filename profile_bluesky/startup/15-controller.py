@@ -95,14 +95,14 @@ class Controller(Device):
         print(f"Total time: {elapsed:.3f}s, settled:{_st.success}")
         self.temperature.unsubscribe(token)
 
-# calcout = Calcout("vm7:userCalcOut9", name="calcout")
-# controller = Controller("vm7:userCalcOut9", name="controller")
+# calcout = Calcout("sky:userCalcOut9", name="calcout")
+# controller = Controller("sky:userCalcOut9", name="controller")
 
 def tester():
     # config a calcout record as a pseudo controller
     calcout.desc.put("userCalcOut9")
     calcout.calc.put("A*B+(1-B)*C")
-    calcout.inpa.put("vm7:userCalcOut9.VAL")
+    calcout.inpa.put("sky:userCalcOut9.VAL")
     calcout.b.put(0.5)
     calcout.c.put(0)
     calcout.d.put(0.05)

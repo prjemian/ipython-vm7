@@ -2,7 +2,7 @@ logger.info(__file__)
 
 """detectors (area detectors handled separately)"""
 
-scaler = ScalerCH('vm7:scaler1', name='scaler', labels=("detectors",))
+scaler = ScalerCH('sky:scaler1', name='scaler', labels=("detectors",))
 scaler.select_channels(None)
 
 # name some channels for convenience
@@ -18,4 +18,4 @@ for obj in (clock, I0, scint, diode, I0Mon, ROI1, ROI2):
     obj._ophyd_labels_ = set(list(obj._ophyd_labels_) + ["counter"])
 
 # demo: use this swait record to make a "noisy" detector signal
-noisy = EpicsSignalRO('vm7:userCalc1', name='noisy', labels=("detectors",))
+noisy = EpicsSignalRO('sky:userCalc1', name='noisy', labels=("detectors",))

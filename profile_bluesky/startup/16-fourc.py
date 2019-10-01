@@ -7,10 +7,10 @@ gi.require_version('Hkl', '5.0')
 from hkl.diffract import E4CV  #this works for mu=0
 from ophyd import PseudoSingle
 
-MOTOR_PV_OMEGA = "vm7:m9"
-MOTOR_PV_CHI = "vm7:m10"
-MOTOR_PV_PHI = "vm7:m11"
-MOTOR_PV_TTH = "vm7:m12"
+MOTOR_PV_OMEGA = "sky:m9"
+MOTOR_PV_CHI = "sky:m10"
+MOTOR_PV_PHI = "sky:m11"
+MOTOR_PV_TTH = "sky:m12"
 
 
 class FourCircleDiffractometer(E4CV):

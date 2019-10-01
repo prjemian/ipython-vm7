@@ -65,7 +65,7 @@ class MyRenegadeSimDetector(SingleTrigger, SimDetector):
         )
 
 
-_ad_prefix = "vm7SIM1:"     # IOC prefix
+_ad_prefix = "adsky:"     # IOC prefix
 
 try:
     # bluesky chooses file names with this detector

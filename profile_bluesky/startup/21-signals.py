@@ -14,5 +14,5 @@ logger.info(__file__)
 shutter = SimulatedApsPssShutterWithStatus(name="shutter")
 shutter.delay_s = 0.05 # shutter needs short recovery time after moving
 
-calcs = APS_synApps.UserCalcsDevice("vm7:", name="calcs")
-calcouts = APS_synApps.UserCalcoutDevice("vm7:", name="calcouts")
+calcs = APS_synApps.UserCalcsDevice("sky:", name="calcs")
+calcouts = APS_synApps.UserCalcoutDevice("sky:", name="calcouts")
