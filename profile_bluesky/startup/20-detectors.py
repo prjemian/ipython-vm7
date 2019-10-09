@@ -3,6 +3,15 @@ logger.info(__file__)
 """detectors (area detectors handled separately)"""
 
 scaler = ScalerCH('sky:scaler1', name='scaler', labels=("detectors",))
+
+if len(scaler.channels.chan01.chname.value) == 0:
+    scaler.channels.chan01.chname.put("clock")
+    scaler.channels.chan02.chname.put("I0")
+    scaler.channels.chan03.chname.put("scint")
+    scaler.channels.chan05.chname.put("diode")
+    scaler.channels.chan08.chname.put("I0Mon")
+    scaler.channels.chan10.chname.put("ROI1")
+    scaler.channels.chan11.chname.put("ROI2")
 scaler.select_channels(None)
 
 # name some channels for convenience
