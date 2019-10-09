@@ -2,6 +2,9 @@
 profile_*/history/
 db/
 
+# Microsoft VS Code
+.vscode/
+
 # SPEC
 *.dat
 
