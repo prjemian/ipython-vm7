@@ -39,9 +39,13 @@ class MyLambdaSimDetector(SingleTrigger, SimDetector):
         @APS_utils.run_in_thread
         def delay():
             if self.delay_s > 0:
+                # the plugin is usually slower than acquisition
                 self.delayed.put(True)
                 time.sleep(self.delay_s)
                 self.delayed.put(True)
+            while not self._status.done:
+                # just in case acquisition lags our delay
+                time.sleep(0.01)
             self.wait_status._finished()
 
         def closure(value,old_value,**kwargs):
