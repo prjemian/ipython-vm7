@@ -1,3 +1,5 @@
 # no ipython history in the repo
 history.sqlite
 
+# log files
+.logs/
