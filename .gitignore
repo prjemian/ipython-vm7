@@ -2,6 +2,9 @@
 profile_*/history/
 db/
 
+# log files
+.logs/
+
 # Microsoft VS Code
 .vscode/
 
