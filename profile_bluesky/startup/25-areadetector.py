@@ -22,6 +22,7 @@ READ_HDF5_FILE_PATH = WRITE_HDF5_FILE_PATH
 
 class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
     create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
+    array_callbacks = Component(EpicsSignalWithRBV, suffix="ArrayCallbacks")
     # ...
 
 class MyTIFFPlugin(TIFFPlugin, FileStoreTIFFIterativeWrite):
