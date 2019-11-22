@@ -25,6 +25,3 @@ ROI2 = scaler.channels.chan11.s
 
 for obj in (clock, I0, scint, diode, I0Mon, ROI1, ROI2):
     obj._ophyd_labels_ = set(list(obj._ophyd_labels_) + ["counter"])
-
-# demo: use this swait record to make a "noisy" detector signal
-noisy = EpicsSignalRO('sky:userCalc1', name='noisy', labels=("detectors",))
