@@ -7,7 +7,7 @@ configure logging
 _log_path = os.path.join(os.getcwd(), ".logs")
 if not os.path.exists(_log_path):
     os.mkdir(_log_path)
-CONSOLE_IO_FILE = os.path.join(_log_path, ".ipython_console.log")
+CONSOLE_IO_FILE = os.path.join(_log_path, "ipython_console.log")
 
 # start logging console to file
 # https://ipython.org/ipython-doc/3/interactive/magics.html#magic-logstart
