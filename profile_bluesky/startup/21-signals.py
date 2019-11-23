@@ -17,11 +17,10 @@ shutter.delay_s = 0.05 # shutter needs short recovery time after moving
 calcs = APS_synApps.UserCalcsDevice("sky:", name="calcs")
 calcouts = APS_synApps.UserCalcoutDevice("sky:", name="calcouts")
 
-# demo: use this swait record to make a "noisy" detector signal
+# demo: use swait records to make "noisy" detector signals
 noisy = EpicsSignalRO('sky:userCalc1', name='noisy', labels=("detectors",))
 
 calcs.enable.put(1)
-epics.caput(m1.prefix + ".SREV", 8000)
 
 APS_devices.setup_lorentzian_swait(
     calcs.calc1,
@@ -32,22 +31,22 @@ APS_devices.setup_lorentzian_swait(
     noise=0.05,
 )
 
-def example_tune():
-    p0 = m1.position
-    print(f"starting position: {p0}")
-    yield from bp.scan([noisy], m1, -2, 2, 53)
-    cen = bec.peaks["cen"].get(noisy.name)
-    fwhm = bec.peaks["fwhm"].get(noisy.name)
-    print(f"rough tune: cen={cen}, fwhm={fwhm}")
 
-    if cen is None:
-        yield from bps.mv(m1, p0)
-    else:
-        yield from bps.mv(m1, cen)
-        yield from bp.rel_scan([noisy], m1, -fwhm, fwhm, 47)
-        cen = bec.peaks["cen"][noisy.name]
-        fwhm = bec.peaks["fwhm"][noisy.name]
-        print(f"fine tune: cen={cen}, fwhm={fwhm}")
-        yield from bps.mv(m1, cen)
-
-    print(f"final position: {m1.position}")
+try:
+    registers = MyRegisters("IOC:", name="registers")
+    det2 = registers.decimal1
+    mover2 = registers.decimal2
+    APS_devices.setup_lorentzian_swait(
+        calcs.calc2,
+        mover2,
+        center = 2*np.random.random() - 1,
+        width = 0.015 * np.random.random(),
+        scale = 10000 * (9 + np.random.random()),
+        noise=0.05,
+    )
+    calcs.calc2.output_link_pv.put(registers.decimal1.pvname)
+except Exception:
+    print("registers.db IOC is not available")
+    registers = None
+    det2 = None
+    mover2 = None
