@@ -3,11 +3,11 @@ logger.info(__file__)
 """local, custom Device definitions"""
 
 class MyRegisters(Device):
-    decimal1 = Component(EpicsSignal, "float1")
-    decimal2 = Component(EpicsSignal, "float2")
-    decimal3 = Component(EpicsSignal, "float3")
-    decimal4 = Component(EpicsSignal, "float4")
-    decimal5 = Component(EpicsSignal, "float5")
+    decimal1 = Component(EpicsSignal, "float1", kind="hinted")
+    decimal2 = Component(EpicsSignal, "float2", kind="hinted")
+    decimal3 = Component(EpicsSignal, "float3", kind="hinted")
+    decimal4 = Component(EpicsSignal, "float4", kind="hinted")
+    decimal5 = Component(EpicsSignal, "float5", kind="hinted")
 
     bit1 = Component(EpicsSignal, "bit1")
     bit2 = Component(EpicsSignal, "bit2")
@@ -15,11 +15,11 @@ class MyRegisters(Device):
     bit4 = Component(EpicsSignal, "bit4")
     bit5 = Component(EpicsSignal, "bit5")
 
-    whole1 = Component(EpicsSignal, "int1")
-    whole2 = Component(EpicsSignal, "int2")
-    whole3 = Component(EpicsSignal, "int3")
-    whole4 = Component(EpicsSignal, "int4")
-    whole5 = Component(EpicsSignal, "int5")
+    whole1 = Component(EpicsSignal, "int1", kind="hinted")
+    whole2 = Component(EpicsSignal, "int2", kind="hinted")
+    whole3 = Component(EpicsSignal, "int3", kind="hinted")
+    whole4 = Component(EpicsSignal, "int4", kind="hinted")
+    whole5 = Component(EpicsSignal, "int5", kind="hinted")
 
     text1 = Component(EpicsSignal, "text1", string=True)
     text2 = Component(EpicsSignal, "text2", string=True)
