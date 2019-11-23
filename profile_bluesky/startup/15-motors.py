@@ -12,3 +12,7 @@ m7 = EpicsMotor('sky:m7', name='m7', labels=("motor",))
 m8 = EpicsMotor('sky:m8', name='m8', labels=("motor",))
 
 m16 = EpicsMotor('sky:m16', name='m16', labels=("motor",))
+
+for m in (m1, m2, m3, m4, m5, m6, m7, m8, m16):
+    epics.caput(m.prefix + ".SREV", 8000)
+del m
