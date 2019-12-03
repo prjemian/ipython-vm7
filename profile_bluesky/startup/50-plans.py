@@ -150,53 +150,5 @@ def my_test():
         table.addRow(("noise", noise.get()))
         table.addRow(("motor position", m1.position))
         logger.info(f"new settings for simulated peak #{i}:\n{table}")
-        becplot_prune_fifo(1, noisy, m1)
+        APS_utils.plot_prune_fifo(bec, 4, noisy, m1)
         yield from lineup(noisy, m1, -2, 2, 41, 0.2)
-        # if i > 3:
-        #     break
-
-
-def becplot_prune_fifo(n, y, x):
-    """
-    find the plot with axes x and y and replot with only the last *n* lines
-
-    Note: this is not a bluesky plan.  Call it as normal Python function.
-
-    EXAMPLE::
-
-        becplot_prune_fifo(1, noisy, m1)
-
-    PARAMETERS
-    
-    n : int
-        number of plots to keep
-    
-    y : object
-        ophyd Signal object on dependent (y) axis
-    
-    x : object
-        ophyd Signal object on independent (x) axis
-    """
-    for liveplot in bec._live_plots.values():
-        lp = liveplot.get(y.name)
-        if lp is None:
-            continue
-        if lp.x != x.name or lp.y != y.name:
-            continue
-        # print(lp.x, lp.y)
-        if len(lp.ax.lines) > n:
-            lp.ax.lines = lp.ax.lines[-n:]
-            lp.update_plot()
-
-
-def showme():
-    n = 2
-    for i in range(3):
-        becplot_prune_fifo(n, noisy, m1)
-        yield from bp.scan([noisy], m1, 0.85, 0.91, 31)
-
-        becplot_prune_fifo(n, noisy, m1)
-        yield from bp.scan([noisy], m1, 0.75, 1.0, 31)
-
-        becplot_prune_fifo(n, noisy, m1)
-        yield from bp.scan([noisy], m1, 0.5, 1.5, 31)
