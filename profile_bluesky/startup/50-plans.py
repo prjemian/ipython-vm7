@@ -152,3 +152,13 @@ def my_test():
         logger.info(f"new settings for simulated peak #{i}:\n{table}")
         APS_utils.plot_prune_fifo(bec, 4, noisy, m1)
         yield from lineup(noisy, m1, -2, 2, 41, 0.2)
+
+
+def back_and_forth():
+    i = 0
+    while True:
+        i += 1
+        logger.info(f"forward: {i}")
+        yield from bps.mv(m1, 1)
+        logger.info("backward")
+        yield from bps.mv(m1, -1)
