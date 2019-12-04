@@ -3,6 +3,9 @@ logger.info(__file__)
 """local, custom Bluesky plans (scans)"""
 
 
+PRE_MOVE_DELAY_S = 0.01
+
+
 def lineup(counter, axis, minus, plus, npts, time_s=0.1, peak_factor=4, width_factor=0.8,_md={}):
     """
     lineup and center a given axis, relative to current position
@@ -93,6 +96,7 @@ def lineup(counter, axis, minus, plus, npts, time_s=0.1, peak_factor=4, width_fa
                 aligned = True
             
             logger.info(f"moving {axis.name} to {final}  (aligned: {aligned})")
+            yield from bps.sleep(PRE_MOVE_DELAY_S)
             yield from bps.mv(axis, final)
         else:
             logger.error("no statistical analysis of scan peak!")
@@ -134,6 +138,7 @@ def my_test():
     while True:
         i += 1
         # scramble the peak settings
+        yield from bps.sleep(PRE_MOVE_DELAY_S)
         yield from bps.mv(
             center, 2*np.random.random() - 1,
             width, 0.0025 * 10**(np.random.random()), 
@@ -154,11 +159,33 @@ def my_test():
         yield from lineup(noisy, m1, -2, 2, 41, 0.2)
 
 
-def back_and_forth():
+def back_and_forth(delay_s=None):
+    delay_s = delay_s or PRE_MOVE_DELAY_S
     i = 0
     while True:
         i += 1
-        logger.info(f"forward: {i}")
+
+        yield from bps.sleep(delay_s)
+        print(f"forward: {i}")
         yield from bps.mv(m1, 1)
-        logger.info("backward")
+
+        yield from bps.sleep(delay_s)
+        print("backward")
         yield from bps.mv(m1, -1)
+
+
+pv = EpicsSignal("IOC:float1", name="pv")
+
+def this_that(delay_s=None):
+    delay_s = delay_s or PRE_MOVE_DELAY_S
+    i = 0
+    while True:
+        i += 1
+
+        yield from bps.sleep(delay_s)
+        print(f"this: {i}")
+        yield from bps.mv(pv, 1)
+
+        yield from bps.sleep(delay_s)
+        print("that")
+        yield from bps.mv(pv, -1)
