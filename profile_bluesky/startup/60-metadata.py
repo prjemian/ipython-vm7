@@ -27,9 +27,7 @@ RE.md['versions']['numpy'] = np.__version__
 from matplotlib import __version__ as mpl_version
 RE.md['versions']['matplotlib'] = mpl_version
 del mpl_version
-import spec2nexus
 RE.md['versions']['spec2nexus'] = spec2nexus.__version__
-import pyRestTable 
 RE.md['versions']['pyRestTable'] = pyRestTable.__version__
 
 logger.info(f"""
