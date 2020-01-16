@@ -3,18 +3,21 @@ logger.info(__file__)
 """gather all the imports here"""
 
 
+import collections
 import datetime
 from enum import Enum
 import getpass 
 import IPython
 import itertools
 import os
-import socket 
+import pyRestTable
+import socket
+import spec2nexus
 import time
 import uuid
 
 from ophyd import Component, Device, DeviceStatus, Signal
-from ophyd import EpicsMotor, MotorBundle
+from ophyd import EpicsMotor, MotorBundle, SoftPositioner
 from ophyd import EpicsSignal, EpicsSignalRO, EpicsSignalWithRBV
 from ophyd import FormattedComponent 
 from ophyd.scaler import ScalerCH, ScalerChannel
