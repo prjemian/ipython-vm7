@@ -125,6 +125,8 @@ def fourc_example():
 
 def fourc_example_plan():
     reflections = (
+        (-2,-2,4), 
+        (-1,-1,2), 
         (-2,1,1), 
         (-3,0,5), 
         (0,3,1), 
