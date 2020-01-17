@@ -17,7 +17,8 @@ import time
 import uuid
 
 from ophyd import Component, Device, DeviceStatus, Signal
-from ophyd import EpicsMotor, MotorBundle, SoftPositioner
+from ophyd import EpicsMotor, MotorBundle, PseudoPositioner, PseudoSingle, SoftPositioner
+
 from ophyd import EpicsSignal, EpicsSignalRO, EpicsSignalWithRBV
 from ophyd import FormattedComponent 
 from ophyd.scaler import ScalerCH, ScalerChannel
