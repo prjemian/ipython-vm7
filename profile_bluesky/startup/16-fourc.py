@@ -62,6 +62,7 @@ class DiffractometerMixin:
                 self.calc[m].value,
                 self.calc[m].fit)
             for m in self.real_positioners._fields
+            # TODO: any other positioner constraints 
         }
         self._constraints_stack.append(constraints)
 
