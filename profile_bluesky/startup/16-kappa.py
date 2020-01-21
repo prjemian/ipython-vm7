@@ -1,6 +1,8 @@
 logger.info(__file__)
 
-"""Four circle diffractometer (simulated)"""
+"""kappa diffractometer (simulated)"""
+
+# TODO: work-in-progress
 
 use_kappa_diffractometer = False
 
