@@ -1,6 +1,14 @@
+
+"""
+interface EPICS database of general purpose variables
+"""
+
+from ophyd import Component, Device, EpicsSignal
+import logging
+
+logger = logging.getLogger(__name__)
 logger.info(__file__)
 
-"""local, custom Device definitions"""
 
 class MyRegisters(Device):
     decimal1 = Component(EpicsSignal, "float1", kind="hinted")
@@ -32,3 +40,14 @@ class MyRegisters(Device):
     textwave3 = Component(EpicsSignal, "textwave3", string=True)
     textwave4 = Component(EpicsSignal, "textwave4", string=True)
     textwave5 = Component(EpicsSignal, "textwave5", string=True)
+
+
+try:
+    registers = MyRegisters("IOC:", name="registers")
+    det2 = registers.decimal1
+    mover2 = registers.decimal2
+except Exception:
+    print("registers.db IOC is not available")
+    registers = None
+    det2 = None
+    mover2 = None

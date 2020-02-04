@@ -2,6 +2,10 @@ logger.info(__file__)
 
 """signals"""
 
+# from instrument.devices.my_registers import *
+from instrument.startup import *
+print("loaded instrument.startup")
+
 # APS only:
 # aps = APS_devices.ApsMachineParametersDevice(name="aps")
 # sd.baseline.append(aps)
@@ -14,13 +18,9 @@ logger.info(__file__)
 shutter = SimulatedApsPssShutterWithStatus(name="shutter")
 shutter.delay_s = 0.05 # shutter needs short recovery time after moving
 
-calcs = APS_synApps.UserCalcsDevice("sky:", name="calcs")
-calcouts = APS_synApps.UserCalcoutDevice("sky:", name="calcouts")
 
 # demo: use swait records to make "noisy" detector signals
 noisy = EpicsSignalRO('sky:userCalc1', name='noisy', labels=("detectors",))
-
-calcs.enable.put(1)
 
 APS_devices.setup_lorentzian_swait(
     calcs.calc1,
@@ -31,11 +31,7 @@ APS_devices.setup_lorentzian_swait(
     noise=0.05,
 )
 
-
 try:
-    registers = MyRegisters("IOC:", name="registers")
-    det2 = registers.decimal1
-    mover2 = registers.decimal2
     APS_devices.setup_lorentzian_swait(
         calcs.calc2,
         mover2,
@@ -45,8 +41,8 @@ try:
         noise=0.05,
     )
     calcs.calc2.output_link_pv.put(registers.decimal1.pvname)
-except Exception:
-    print("registers.db IOC is not available")
-    registers = None
-    det2 = None
-    mover2 = None
+except NameError:
+    logger.info("variable `registers` is not defined")
+
+
+print(f"end of {__file__}")
