@@ -57,6 +57,6 @@ install_qt_kicker()
 # convenience imports
 from bluesky.callbacks import *
 from bluesky.callbacks.broker import *
-from bluesky.simulators import *
-from bluesky.plans import *
+# from bluesky.simulators import *
+from bluesky import plans as bp
 import numpy as np
