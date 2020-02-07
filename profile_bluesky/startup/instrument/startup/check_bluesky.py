@@ -16,4 +16,3 @@ if cur_version < req_version:
    msg = "Need at least BlueSky %s+, " % ver_str
    msg += ' you have ' + bluesky.__version__
    raise ValueError(msg)
-print("BlueSky version:", bluesky.__version__)

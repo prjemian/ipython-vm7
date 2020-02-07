@@ -6,7 +6,7 @@ import logging
 from ophyd.scaler import ScalerChannel, ScalerCH
 import pyRestTable
 
-from ..startup.framework import bec, bps
+from ..startup.framework import bec, bps, bp
 
 logger = logging.getLogger(__name__)
 logger.info(__file__)

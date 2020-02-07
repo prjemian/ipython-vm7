@@ -1,7 +1,5 @@
 
-import logging
-from instrument.startup.console_session import *
-logger = logging.getLogger(__file__)
+from instrument.console_session import *
 
 show_ophyd_symbols()
-print(print_RE_md(printing=False))
+print_RE_md(printing=False)
