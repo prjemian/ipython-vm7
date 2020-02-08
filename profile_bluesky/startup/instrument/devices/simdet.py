@@ -1,5 +1,19 @@
 
-"""area detectors: ADSimDetector"""
+"""
+area detectors: ADSimDetector
+
+Note these symbols have not connected:
+
+    timeout: adsimdet_cam_pool_max_buffers
+    timeout: adsimdet_image_pool_max_buffers
+    timeout: adsimdet_hdf1_pool_max_buffers
+    timeout: adsimdet_hdf1_file_number_sync
+    timeout: adsimdet_hdf1_file_number_write
+    timeout: adsimdet_tiff1_pool_max_buffers
+    timeout: adsimdet_tiff1_file_number_sync
+    timeout: adsimdet_tiff1_file_number_write
+
+"""
 
 __all__ = [
     'adsimdet',
@@ -39,11 +53,13 @@ READ_HDF5_FILE_PATH = WRITE_HDF5_FILE_PATH
 class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
     create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
     array_callbacks = Component(EpicsSignalWithRBV, suffix="ArrayCallbacks")
-    # ...
+
+    pool_max_buffers = None
 
 class MyTIFFPlugin(TIFFPlugin, FileStoreTIFFIterativeWrite):
     # create_directory_depth = Component(EpicsSignalWithRBV, suffix="CreateDirectory")
-    ...
+
+    pool_max_buffers = None
 
 
 class MySingleTriggerSimDetector(SingleTrigger, SimDetector): 
