@@ -18,4 +18,6 @@ from .startup import *
 from .devices import *
 from .plans import *
 
-from apstools.utils import show_ophyd_symbols, print_RE_md
+from apstools.utils import device_read2table
+from apstools.utils import print_RE_md
+from apstools.utils import show_ophyd_symbols
