@@ -5,3 +5,4 @@ from .motors import *
 from .scaler import *
 from .signals import *
 from .simdet import *
+from .simulators import *
