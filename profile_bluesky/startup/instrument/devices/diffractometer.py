@@ -1,13 +1,17 @@
 
 """add to capabilities of any diffractometer"""
 
-import logging
+__all__ = [
+    'AxisConstraints',
+    'DiffractometerMixin',
+]
+
 import collections
 from ophyd import Component, Device
 import pyRestTable
 
-
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
+logger.info(__file__)
 
 AxisConstraints = collections.namedtuple(
     "AxisConstraints", 

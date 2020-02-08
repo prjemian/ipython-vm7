@@ -1,8 +1,12 @@
 
 """area detectors: ADSimDetector"""
 
+__all__ = [
+    'adsimdet',
+    'altsimdet',
+]
+
 from apstools import devices as APS_devices
-import logging
 
 from ophyd import Component
 from ophyd.areadetector import EpicsSignalWithRBV
@@ -16,7 +20,7 @@ from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
 from ophyd.areadetector.filestore_mixins import FileStoreIterativeWrite
 from ophyd.areadetector.filestore_mixins import FileStoreTIFFIterativeWrite
 
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
 
 

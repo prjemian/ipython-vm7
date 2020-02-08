@@ -2,8 +2,7 @@
 
 """Four circle diffractometer (simulated)"""
 
-import logging
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
 
 import gi

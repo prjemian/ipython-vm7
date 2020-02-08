@@ -31,8 +31,7 @@ Ux 0.878929693221 Uy -3.6132870009 Uz 0.263869539307
 ```
 """
 
-import logging
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
 
 import gi

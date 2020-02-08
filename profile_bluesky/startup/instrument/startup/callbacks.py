@@ -3,15 +3,20 @@
 custom callbacks
 """
 
+__all__ = [
+    'specwriter',
+    'spec_comment',
+    'newSpecFile',
+]
+
 import apstools.filewriters
 import apstools.utils
 import datetime
-import logging
 import os
 
 from ..startup.framework import RE, callback_db
 
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
 
 # write scans to SPEC data file

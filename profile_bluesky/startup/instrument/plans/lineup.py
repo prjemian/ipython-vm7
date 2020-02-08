@@ -1,15 +1,21 @@
 
 """
+instrument plans
 """
 
-import logging
+__all__ = [
+    'lineup',
+    'PRE_MOVE_DELAY_S',
+]
+
+from ..session_logs import logger
+logger.info(__file__)
+
 from ophyd.scaler import ScalerChannel, ScalerCH
 import pyRestTable
 
 from ..startup.framework import bec, bps, bp
 
-logger = logging.getLogger(__name__)
-logger.info(__file__)
 
 PRE_MOVE_DELAY_S = 0.01
 

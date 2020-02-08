@@ -2,6 +2,8 @@
 """
 """
 
+__all__ = []
+
 import apstools
 import bluesky
 import databroker
@@ -9,7 +11,6 @@ from datetime import datetime
 import epics
 import getpass
 import h5py
-import logging
 import matplotlib
 import numpy
 import ophyd
@@ -20,7 +21,7 @@ import spec2nexus
 
 from ..startup.framework import RE
 
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
 
 # Set up default metadata

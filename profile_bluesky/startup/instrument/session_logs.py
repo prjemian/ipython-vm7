@@ -1,5 +1,5 @@
 """
-configure logging
+configure session logging
 """
 
 from IPython import get_ipython
@@ -7,6 +7,9 @@ import os
 # pip install stdlogpj
 import stdlogpj
 
+__all__ = ['logger',]
+
+LOG_NAME = "bluesky-session"
 
 _log_path = os.path.join(os.getcwd(), ".logs")
 if not os.path.exists(_log_path):
@@ -20,13 +23,11 @@ _ipython = get_ipython()
 _ipython.magic(f"logstart -o -t {CONSOLE_IO_FILE} rotate")
 
 
-logger = stdlogpj.standard_logging_setup(
-    "bluesky-ipython-shell", "ipython_logger")
+logger = stdlogpj.standard_logging_setup(LOG_NAME, "ipython_logger")
 
 
 logger.info('#'*60 + " startup")
 logger.info('logging started')
-logger.info(f'logging level = {logger.level}')
 logger.info(f'logging level = {logger.level}')
 
 # logger.debug('example Debug message')

@@ -3,8 +3,15 @@
 initialize the bluesky framework
 """
 
-import logging
-logger = logging.getLogger(__name__)
+__all__ = [
+    'RE', 'callback_db', 'db', 'sd',
+    'bec', 'peaks',
+    'bp', 'bps', 'bpp',
+    'np',
+    'summarize_plan',
+    ]
+
+from ..session_logs import logger
 logger.info(__file__)
 
 # Set up a RunEngine and use metadata backed by a sqlite file.
@@ -55,8 +62,8 @@ from bluesky.utils import install_qt_kicker
 install_qt_kicker()
 
 # convenience imports
-from bluesky.callbacks import *
-from bluesky.callbacks.broker import *
+# from bluesky.callbacks import *
+# from bluesky.callbacks.broker import *
 # from bluesky.simulators import *
 import bluesky.plans as bp
 import bluesky.plan_stubs as bps
@@ -66,9 +73,12 @@ import numpy as np
 # Uncomment the following lines to turn on 
 # verbose messages for debugging.
 # ophyd.logger.setLevel(logging.DEBUG)
-# logging.basicConfig(level=logging.DEBUG)
 
 # diagnostics
 from bluesky.utils import ts_msg_hook
 #RE.msg_hook = ts_msg_hook
 from bluesky.simulators import summarize_plan
+
+# set default timeout for all EpicsSignal connections & communications
+import ophyd
+ophyd.EpicsSignal.set_default_timeout(timeout=10, connection_timeout=5)

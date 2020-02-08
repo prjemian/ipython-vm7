@@ -4,11 +4,9 @@ check that our EPICS soft IOCs are running
 """
 
 import epics
-import logging
 import os
 
-
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
 
 up = epics.caget("sky:UPTIME", timeout=1)
