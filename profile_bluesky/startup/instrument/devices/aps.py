@@ -8,9 +8,10 @@ __all__ = [
     # 'undulator',
     ]
 
-import apstools.devices
 from ..session_logs import logger
 logger.info(__file__)
+
+import apstools.devices
 
 from ..startup.framework import sd
 
