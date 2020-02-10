@@ -3,9 +3,12 @@
 interface EPICS database of general purpose variables
 """
 
-from ophyd import Component, Device, EpicsSignal
+__all__ = "registers det2 mover2".split()
+
 from ..session_logs import logger
 logger.info(__file__)
+
+from ophyd import Component, Device, EpicsSignal
 
 
 class MyRegisters(Device):
