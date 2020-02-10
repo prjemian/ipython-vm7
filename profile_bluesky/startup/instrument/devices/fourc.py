@@ -2,6 +2,8 @@
 
 """Four circle diffractometer (simulated)"""
 
+__all__ = ["fourc", "lnolao"]
+
 from ..session_logs import logger
 logger.info(__file__)
 

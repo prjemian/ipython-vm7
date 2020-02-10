@@ -1,6 +1,8 @@
 
 """kappa diffractometer (simulated)"""
 
+__all__ = ["kappa",]
+
 from ..session_logs import logger
 logger.info(__file__)
 
