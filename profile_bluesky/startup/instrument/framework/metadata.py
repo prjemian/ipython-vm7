@@ -22,7 +22,7 @@ import pyRestTable
 import socket
 import spec2nexus
 
-from ..startup.initialize import RE
+from .initialize import RE
 
 # Set up default metadata
 

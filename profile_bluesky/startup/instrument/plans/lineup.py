@@ -16,7 +16,7 @@ import bluesky.plan_stubs as bps
 from ophyd.scaler import ScalerChannel, ScalerCH
 import pyRestTable
 
-from ..startup.initialize import bec
+from ..framework import bec
 
 
 PRE_MOVE_DELAY_S = 0.01

@@ -20,8 +20,7 @@ __all__ = [
     'altsimdet',
 ]
 
-from apstools import devices as APS_devices
-
+import apstools.devices
 from ophyd import Component
 from ophyd.areadetector import EpicsSignalWithRBV
 from ophyd.areadetector import ADComponent
@@ -79,7 +78,7 @@ class MySingleTriggerSimDetector(SingleTrigger, SimDetector):
 
 
 class myHdf5EpicsIterativeWriter(
-    APS_devices.AD_EpicsHdf5FileName, 
+    apstools.devices.AD_EpicsHdf5FileName, 
     FileStoreIterativeWrite): pass
 class myHDF5FileNames(HDF5Plugin, myHdf5EpicsIterativeWriter): pass
 class EpicsDefinesHDF5FileNames(HDF5Plugin, myHdf5EpicsIterativeWriter):
