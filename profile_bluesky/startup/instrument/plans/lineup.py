@@ -11,10 +11,12 @@ __all__ = [
 from ..session_logs import logger
 logger.info(__file__)
 
+import bluesky.plans as bp
+import bluesky.plan_stubs as bps
 from ophyd.scaler import ScalerChannel, ScalerCH
 import pyRestTable
 
-from ..startup.framework import bec, bps, bp
+from ..startup.initialize import bec
 
 
 PRE_MOVE_DELAY_S = 0.01
