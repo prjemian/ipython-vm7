@@ -1,12 +1,12 @@
 
 """
-configure for data collection in a console session
+configure for data collection
 """
 
 from .session_logs import *
 logger.info(__file__)
 
-from .mpl.console import *
+from .mpl import *
 
 # are our soft IOCs running?
 logger.info("check if soft IOCs are running")
