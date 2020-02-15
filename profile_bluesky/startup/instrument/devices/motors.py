@@ -7,35 +7,12 @@ __all__ = "m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15 m16".split()
 
 from ophyd import Device, Component, EpicsSignal, EpicsMotor
 
+from apstools.devices import EpicsMotorLimitsMixin
 from ..session_logs import logger
 logger.info(__file__)
 
 
-class Mixin(EpicsMotor):
-    high_limit_value = Component(EpicsSignal, ".HLM", kind="omitted")
-    low_limit_value = Component(EpicsSignal, ".LLM", kind="omitted")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        def cb_limit_changed(value, old_value, **kwargs):
-            if (
-                self.connected 
-                and old_value is not None 
-                and value != old_value
-            ):
-                self.user_setpoint._metadata_changed(
-                    self.user_setpoint.pvname,
-                    self.user_setpoint._read_pv.get_ctrlvars(),
-                    from_monitor=True,
-                    update=True,
-                    )
-
-        self.low_limit_value.subscribe(cb_limit_changed)
-        self.high_limit_value.subscribe(cb_limit_changed)
-
-
-class MyMotor(Mixin, EpicsMotor):
+class MyMotor(EpicsMotorLimitsMixin, EpicsMotor):
     steps_per_rev = Component(EpicsSignal, ".SREV", kind="omitted")
 
 
