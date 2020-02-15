@@ -18,21 +18,21 @@ class Mixin(EpicsMotor):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        def cb_low_limit(value, old_value, **kwargs):
-            if self.connected and old_value is not None and value != self.low_limit:
-                # print(f"new low limit:{value} old:{old_value}, kwargs={kwargs}")
-                self.user_setpoint._metadata['lower_ctrl_limit'] = value
-        def cb_high_limit(value, old_value, **kwargs):
-            if self.connected and old_value is not None and value != self.high_limit:
-                # print(f"new high limit:{value} old:{old_value}, kwargs={kwargs}")
-                self.user_setpoint._metadata['upper_ctrl_limit'] = value
-        def cb_watch(value, old_value, **kwargs):
-            if self.connected:
-                print(f"new:{value} old:{old_value}, kwargs={kwargs}")
+        def cb_limit_changed(value, old_value, **kwargs):
+            if (
+                self.connected 
+                and old_value is not None 
+                and value != old_value
+            ):
+                self.user_setpoint._metadata_changed(
+                    self.user_setpoint.pvname,
+                    self.user_setpoint._read_pv.get_ctrlvars(),
+                    from_monitor=True,
+                    update=True,
+                    )
 
-        self.low_limit_value.subscribe(cb_low_limit)
-        self.high_limit_value.subscribe(cb_high_limit)
-        # self.user_setpoint.subscribe(cb_watch)
+        self.low_limit_value.subscribe(cb_limit_changed)
+        self.high_limit_value.subscribe(cb_limit_changed)
 
 
 class MyMotor(Mixin, EpicsMotor):
