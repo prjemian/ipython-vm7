@@ -9,7 +9,7 @@ export BASE=$(dirname $0)
 
 echo `screen -ls`
 
-# Where to get softIoc?
+# Q: Is softIoc available?
 # 
 # of these:
 # (base) prjemian@ookhd:~/.ipython$ locate softIoc | grep /bin/
