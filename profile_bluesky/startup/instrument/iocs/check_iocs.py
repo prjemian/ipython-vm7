@@ -25,8 +25,9 @@ def run_command(command):
 
 up = epics.caget("sky:UPTIME", timeout=1)
 if up is None:
+    home = os.environ["HOME"]
     logger.info("EPICS sky IOCs not running.  Starting them now...")
-    run_command("/home/mintadmin/bin/start_iocs.sh")
+    run_command(f"{home}/bin/start_iocs.sh")
     logger.debug("sky IOCs started")
 else:
     logger.info("EPICS sky IOCs ready...")

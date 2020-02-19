@@ -3,7 +3,11 @@
 configure the motors
 """
 
-__all__ = "m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15 m16".split()
+__all__ = """
+    m1 m2 m3 m4 
+    m5 m6 m7 m8 
+    m13 m14 m15 m16
+""".split()
 
 from ophyd import Device, Component, EpicsSignal, EpicsMotor
 
@@ -13,6 +17,7 @@ logger.info(__file__)
 
 
 class MyMotor(EpicsMotorLimitsMixin, EpicsMotor):
+    "add support for setting/chaning motor limits and resolution"
     steps_per_rev = Component(EpicsSignal, ".SREV", kind="omitted")
 
 
@@ -24,15 +29,19 @@ m5 = MyMotor('sky:m5', name='m5', labels=("motor",))
 m6 = MyMotor('sky:m6', name='m6', labels=("motor",))
 m7 = MyMotor('sky:m7', name='m7', labels=("motor",))
 m8 = MyMotor('sky:m8', name='m8', labels=("motor",))
-m9 = MyMotor('sky:m9', name='m9', labels=("motor",))
-m10 = MyMotor('sky:m10', name='m10', labels=("motor",))
-m11 = MyMotor('sky:m11', name='m11', labels=("motor",))
-m12 = MyMotor('sky:m12', name='m12', labels=("motor",))
+# m9-12 are now parts of the "h1003" device
+# m9 = MyMotor('sky:m9', name='m9', labels=("motor",))
+# m10 = MyMotor('sky:m10', name='m10', labels=("motor",))
+# m11 = MyMotor('sky:m11', name='m11', labels=("motor",))
+# m12 = MyMotor('sky:m12', name='m12', labels=("motor",))
 m13 = MyMotor('sky:m13', name='m13', labels=("motor",))
 m14 = MyMotor('sky:m14', name='m14', labels=("motor",))
 m15 = MyMotor('sky:m15', name='m15', labels=("motor",))
 m16 = MyMotor('sky:m16', name='m16', labels=("motor",))
 
-for m in (m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16):
+for m in (m1, m2, m3, m4, 
+          m5, m6, m7, m8, 
+          # m9, m10, m11, m12, 
+          m13, m14, m15, m16):
     m.steps_per_rev.put(8000)
 del m
