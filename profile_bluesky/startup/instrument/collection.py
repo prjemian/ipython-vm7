@@ -20,3 +20,5 @@ from .plans import *
 from .utils import *
 
 from apstools.utils import *
+
+from .session_logs import logger
