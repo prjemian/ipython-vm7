@@ -38,7 +38,9 @@ logger.info(__file__)
 
 import gi
 gi.require_version('Hkl', '5.0')
+# FIXME: Aaaaaack!  Next line dumps core!
 from hkl.diffract import E6C  #this works for mu=0
+# Segmentation fault (core dumped)
 from hkl.util import Lattice
 
 from bluesky import plans as bp
@@ -68,14 +70,13 @@ class SixCircleDiffractometer(DiffractometerMixin, E6C):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # since this diffractometer uses simulated motors,
         # prime the SoftPositioners (motors) with initial values
         # otherwise, position == None --> describe, etc gets borked
-        self.mu.move(0)
-        self.omega.move(0)
-        self.chi.move(0)
-        self.phi.move(0)
-        self.gamma.move(0)
-        self.delta.move(0)
+        for axis in (self.mu, self.omega, 
+                     self.chi, self.phi, 
+                     self.gamma, self.delta):
+            axis.move(0)
 
 
 sixc = SixCircleDiffractometer('', name='sixc')
