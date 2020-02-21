@@ -2,7 +2,10 @@
 
 """Four circle diffractometer (simulated)"""
 
-__all__ = ["fourc", "lnolao"]
+__all__ = [
+    "fourc", 
+    "lnolao",
+]
 
 from ..session_logs import logger
 logger.info(__file__)
@@ -25,40 +28,39 @@ from .diffractometer import DiffractometerMixin
 from .scaler import I0Mon, diode, scint
 
 
-use_fourc_diffractometer = True
-
-if use_fourc_diffractometer:
-
-    MOTOR_PV_OMEGA = "sky:m9"
-    MOTOR_PV_CHI = "sky:m10"
-    MOTOR_PV_PHI = "sky:m11"
-    MOTOR_PV_TTH = "sky:m12"
+MOTOR_PV_OMEGA = "sky:m9"
+MOTOR_PV_CHI = "sky:m10"
+MOTOR_PV_PHI = "sky:m11"
+MOTOR_PV_TTH = "sky:m12"
 
 
-    class FourCircleDiffractometer(DiffractometerMixin, E4CV):
-        h = Component(PseudoSingle, '', labels=("hkl", "fourc"))
-        k = Component(PseudoSingle, '', labels=("hkl", "fourc"))
-        l = Component(PseudoSingle, '', labels=("hkl", "fourc"))
+class FourCircleDiffractometer(DiffractometerMixin, E4CV):
+    h = Component(PseudoSingle, '', labels=("hkl", "fourc"))
+    k = Component(PseudoSingle, '', labels=("hkl", "fourc"))
+    l = Component(PseudoSingle, '', labels=("hkl", "fourc"))
 
-        omega = Component(EpicsMotor, MOTOR_PV_OMEGA, labels=("motor", "fourc"))
-        chi =   Component(EpicsMotor, MOTOR_PV_CHI, labels=("motor", "fourc"))
-        phi =   Component(EpicsMotor, MOTOR_PV_PHI, labels=("motor", "fourc"))
-        tth =   Component(EpicsMotor, MOTOR_PV_TTH, labels=("motor", "fourc"))
+    omega = Component(EpicsMotor, MOTOR_PV_OMEGA, labels=("motor", "fourc"))
+    chi =   Component(EpicsMotor, MOTOR_PV_CHI, labels=("motor", "fourc"))
+    phi =   Component(EpicsMotor, MOTOR_PV_PHI, labels=("motor", "fourc"))
+    tth =   Component(EpicsMotor, MOTOR_PV_TTH, labels=("motor", "fourc"))
 
-    fourc = FourCircleDiffractometer('', name='fourc')
-    logger.info(f"{fourc.name} modes: {fourc.engine.modes}")
-    fourc.calc.engine.mode = fourc.engine.modes[0]  # 'bissector' - constrain tth = 2 * omega
-    logger.info(f"selected mode: {fourc.calc.engine.mode}")
+fourc = FourCircleDiffractometer('', name='fourc')
+fourc.calc.engine.mode = fourc.engine.modes[0]  # 'bissector' - constrain tth = 2 * omega
 
-    # reflections = [(h-2,k-2,l-2) for h in range(5) for k in range(5) for l in range(5)]
-    reflections = (
-        (1,0,0), 
-        (1,1,0), 
-        (1,0,1), 
-        (1,1,1),
-    )
+logger.info(f"{fourc.name} modes: {fourc.engine.modes}")
+logger.info(f"selected mode: {fourc.calc.engine.mode}")
 
-    print(fourc.forwardSolutionsTable(reflections, full=True))
+# reflections = [(h-2,k-2,l-2) for h in range(5) for k in range(5) for l in range(5)]
+logger.info(
+    fourc.forwardSolutionsTable(
+        (
+            (1,0,0), 
+            (1,1,0), 
+            (1,0,1), 
+            (1,1,1),
+        ), 
+        full=True)
+)
 
 
 def fourc_example():
@@ -90,15 +92,16 @@ def example_fourc_constraints():
     # define some constraints in a dictionary
     diffractometer_constraints = {
         # axis: AxisConstraints(lo_limit, hi_limit, value, fit)
-        # "omega": AxisConstraints(-150, 150, 0, True),
+        "omega": AxisConstraints(-120, 120, 0, True),
         # "tth": AxisConstraints(-10, 142, 0, True),
-        # "chi": AxisConstraints(-120, 120, 0, True),
+        "chi": AxisConstraints(-120, 120, 0, True),
         
         # # we don't have these axes. Fix them to 0
         # "phi": AxisConstraints(0, 0, 0, False),
         # "chi": AxisConstraints(0, 0, 0, False),
         
-        # # Attention naming convention inverted at the detector stages!
+        # # Attention:
+        # #    naming convention inverted at the detector stages!
         # "delta": AxisConstraints(-5, 180, 0, True),
         # "gamma": AxisConstraints(-5, 180, 0, True),
     }
@@ -106,17 +109,20 @@ def example_fourc_constraints():
     fourc.applyConstraints(diffractometer_constraints)
 
 def fourc_example_plan():
-    reflections = (
-        (-2,-2,4), 
-        (-1,-1,2), 
-        (-2,1,1), 
-        (-3,0,5), 
-        (0,3,1), 
-        (0,3,.5), 
-        (0,3,1.5),
+    logger.info(
+        fourc.forwardSolutionsTable(
+            (
+                (-2,-2,4), 
+                (-1,-1,2), 
+                (-2,1,1), 
+                (-3,0,5), 
+                (0,3,1), 
+                (0,3,.5), 
+                (0,3,1.5),
+            )
+        )
     )
-    print(fourc.forwardSolutionsTable(reflections))
-    yield from bps.mv(fourc, (0, 3, 1))   
+    yield from bps.mv(fourc, (0, 3, 1))
 
     detectors = [
         fourc.h, fourc.k, fourc.l,
@@ -185,13 +191,13 @@ class Fourc_LNO_LAO_Diffractometer(DiffractometerMixin, E4CH):
 
 lnolao = Fourc_LNO_LAO_Diffractometer('', name='lnolao')
 lnolao.calc.engine.mode = "constant_omega"
-logger.info(f"selected mode: {lnolao.calc.engine.mode}")
 lnolao.applyConstraints({
     "tth": AxisConstraints(-180, 180, 0, True),
     "omega": AxisConstraints(0, 0, 0, False),
     "chi": AxisConstraints(-180, 180, 0, True),
     "phi": AxisConstraints(-180, 180, 0, True),
     })
+logger.info(f"selected mode: {lnolao.calc.engine.mode}")
 
 # give initial values to all positioners
 for m in lnolao.real_positioners._fields:
@@ -214,14 +220,14 @@ r2 = lnolao.calc.sample.add_reflection(
     position=lnolao.calc.Position(
         tth=65.644, omega=32.82125, chi=145.985, phi=48.22875))
 lnolao.calc.sample.compute_UB(r1, r2)
-print(lnolao.UB.value)
+logger.info(lnolao.UB.value)
 """
 [[-9.55734534e-02 -1.65427724e+00  2.42844485e-03]
  [-1.65871109e+00  9.82237292e-02 -3.89705577e-04]
  [-2.63016876e-04 -9.81484255e-03 -1.65396181e+00]]
 """
 
-print(
+logger.info(
     lnolao.forwardSolutionsTable(
         [(2, 2, 1.9),
         (0, 0, 2),
