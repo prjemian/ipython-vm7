@@ -3,7 +3,10 @@
 """Four circle diffractometer (simulated)"""
 
 __all__ = [
-    "fourc", 
+    "fourc",
+    "fourc_example",
+    "fourc_example_constraints",
+    "fourc_example_plan",
     "lnolao",
 ]
 
@@ -28,10 +31,10 @@ from .diffractometer import DiffractometerMixin
 from .scaler import I0Mon, diode, scint
 
 
-MOTOR_PV_OMEGA = "sky:m9"
-MOTOR_PV_CHI = "sky:m10"
-MOTOR_PV_PHI = "sky:m11"
-MOTOR_PV_TTH = "sky:m12"
+# MOTOR_PV_OMEGA = "sky:m9"
+# MOTOR_PV_CHI = "sky:m10"
+# MOTOR_PV_PHI = "sky:m11"
+# MOTOR_PV_TTH = "sky:m12"
 
 
 class FourCircleDiffractometer(DiffractometerMixin, E4CV):
@@ -39,10 +42,24 @@ class FourCircleDiffractometer(DiffractometerMixin, E4CV):
     k = Component(PseudoSingle, '', labels=("hkl", "fourc"))
     l = Component(PseudoSingle, '', labels=("hkl", "fourc"))
 
-    omega = Component(EpicsMotor, MOTOR_PV_OMEGA, labels=("motor", "fourc"))
-    chi =   Component(EpicsMotor, MOTOR_PV_CHI, labels=("motor", "fourc"))
-    phi =   Component(EpicsMotor, MOTOR_PV_PHI, labels=("motor", "fourc"))
-    tth =   Component(EpicsMotor, MOTOR_PV_TTH, labels=("motor", "fourc"))
+    # omega = Component(EpicsMotor, MOTOR_PV_OMEGA, labels=("motor", "fourc"))
+    # chi   = Component(EpicsMotor, MOTOR_PV_CHI, labels=("motor", "fourc"))
+    # phi   = Component(EpicsMotor, MOTOR_PV_PHI, labels=("motor", "fourc"))
+    # tth   = Component(EpicsMotor, MOTOR_PV_TTH, labels=("motor", "fourc"))
+    omega = Component(SoftPositioner, labels=("motor", "fourc"))
+    chi   = Component(SoftPositioner, labels=("motor", "fourc"))
+    phi   = Component(SoftPositioner, labels=("motor", "fourc"))
+    tth   = Component(SoftPositioner, labels=("motor", "fourc"))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # since this diffractometer uses simulated motors,
+        # prime the SoftPositioners (motors) with initial values
+        # otherwise, position == None --> describe, etc gets borked
+        for axis in (self.omega, self.phi, self.chi, self.tth):
+            axis.move(0)
+
 
 fourc = FourCircleDiffractometer('', name='fourc')
 fourc.calc.engine.mode = fourc.engine.modes[0]  # 'bissector' - constrain tth = 2 * omega
@@ -88,7 +105,7 @@ def fourc_example():
     fourc.calc.sample.compute_UB(r1, r2)
 
 
-def example_fourc_constraints():
+def fourc_example_constraints():
     # define some constraints in a dictionary
     diffractometer_constraints = {
         # axis: AxisConstraints(lo_limit, hi_limit, value, fit)
@@ -107,6 +124,7 @@ def example_fourc_constraints():
     }
 
     fourc.applyConstraints(diffractometer_constraints)
+    fourc.showConstraints()
 
 def fourc_example_plan():
     logger.info(
@@ -184,9 +202,9 @@ class Fourc_LNO_LAO_Diffractometer(DiffractometerMixin, E4CH):
     l = Component(PseudoSingle, '', labels=("hkl", "lnolao"))
 
     omega = Component(SoftPositioner, labels=("motor", "lnolao"))
-    chi =   Component(SoftPositioner, labels=("motor", "lnolao"))
-    phi =   Component(SoftPositioner, labels=("motor", "lnolao"))
-    tth =   Component(SoftPositioner, labels=("motor", "lnolao"))
+    chi   = Component(SoftPositioner, labels=("motor", "lnolao"))
+    phi   = Component(SoftPositioner, labels=("motor", "lnolao"))
+    tth   = Component(SoftPositioner, labels=("motor", "lnolao"))
 
 
 lnolao = Fourc_LNO_LAO_Diffractometer('', name='lnolao')

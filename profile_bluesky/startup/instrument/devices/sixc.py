@@ -31,14 +31,19 @@ Ux 0.878929693221 Uy -3.6132870009 Uz 0.263869539307
 ```
 """
 
-__all__ = ["sixc",]
+__all__ = [
+    "sixc",
+    "sixc_example",
+    "sixc_example_constraints",
+    "sixc_example_plan",
+]
 
 from ..session_logs import logger
 logger.info(__file__)
 
 import gi
 gi.require_version('Hkl', '5.0')
-# FIXME: Aaaaaack!  Next line dumps core!
+# FIXME: Aaaaaack!  Next line dumps core! On fresh Ubuntu 19.10
 from hkl.diffract import E6C  #this works for mu=0
 # Segmentation fault (core dumped)
 from hkl.util import Lattice
@@ -60,10 +65,10 @@ class SixCircleDiffractometer(DiffractometerMixin, E6C):
     k = Component(PseudoSingle, '', labels=("hkl", "sixc"))
     l = Component(PseudoSingle, '', labels=("hkl", "sixc"))
 
-    mu =    Component(SoftPositioner, labels=("motor", "sixc"))
+    mu    = Component(SoftPositioner, labels=("motor", "sixc"))
     omega = Component(SoftPositioner, labels=("motor", "sixc"))
-    chi =   Component(SoftPositioner, labels=("motor", "sixc"))
-    phi =   Component(SoftPositioner, labels=("motor", "sixc"))
+    chi   = Component(SoftPositioner, labels=("motor", "sixc"))
+    phi   = Component(SoftPositioner, labels=("motor", "sixc"))
     gamma = Component(SoftPositioner, labels=("motor", "sixc"))
     delta = Component(SoftPositioner, labels=("motor", "sixc"))
 
@@ -102,7 +107,9 @@ def sixc_example():
     r2 = sixc.calc.sample.add_reflection(
         0, 12, 1,
         position=sixc.calc.Position(
-            mu=0, omega=34.96232, chi=78.3139, phi=0, gamma=0, delta=71.8007))
+            mu=0, omega=34.96232, chi=78.3139, 
+            phi=0, gamma=0, delta=71.8007)
+            )
 
     sixc.calc.sample.compute_UB(r1, r2)
 
@@ -128,7 +135,7 @@ def sixc_example_constraints():
         (0, 8, 0), 
         (0, 12, 1),
     )
-    print(sixc.forwardSolutionsTable(reflections, full=True))
+    logger.info(sixc.forwardSolutionsTable(reflections, full=True))
     # (0.5, 14.5, 0.43): [0, 51.48568, 84.79259, 0, 0, 89.37964]  # mu, omega, chi, phi, gamma, delta
 
 

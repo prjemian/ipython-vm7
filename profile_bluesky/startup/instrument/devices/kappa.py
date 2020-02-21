@@ -1,7 +1,12 @@
 
 """kappa diffractometer (simulated)"""
 
-__all__ = ["kappa",]
+__all__ = [
+    "kappa",
+    # "kappa_example",
+    # "kappa_example_constraints",
+    "kappa_example_plan",
+]
 
 from ..session_logs import logger
 logger.info(__file__)
@@ -35,9 +40,9 @@ class KappaDiffractometer(DiffractometerMixin, K4CV):
 
     # energy : Signal unless we override it here
     komega = Component(SoftPositioner, labels=("motor", "kappa"))
-    kappa =   Component(SoftPositioner, labels=("motor", "kappa"))
-    kphi =   Component(SoftPositioner, labels=("motor", "kappa"))
-    tth =   Component(SoftPositioner, labels=("motor", "kappa"))
+    kappa  = Component(SoftPositioner, labels=("motor", "kappa"))
+    kphi   = Component(SoftPositioner, labels=("motor", "kappa"))
+    tth    = Component(SoftPositioner, labels=("motor", "kappa"))
 
     # omega =   Component(SoftPositioner)
 
@@ -72,6 +77,7 @@ diffractometer_constraints = {
 }
 
 kappa.applyConstraints(diffractometer_constraints)
+kappa.showConstraints()
 
 # define a crystal by its lattice
 kappa.calc.new_sample('cubic_sample', 
@@ -82,3 +88,30 @@ kappa.calc.new_sample('cubic_sample',
 # calculate using the default UB matrix
 
 logger.info(kappa.forwardSolutionsTable([(1, 0, 0)]))
+kappa.resetConstraints()
+kappa.showConstraints()
+logger.info(kappa.forwardSolutionsTable([(1, 0, 0)]))
+
+
+def kappa_example_plan():
+    yield from bps.mv(kappa, (0.5, .1, 0.5))   
+
+    detectors = [
+        kappa.h, kappa.k, kappa.l,
+        I0Mon, diode, scint,
+        ]
+
+    # add scan metadata
+    md = dict(
+        komega=kappa.komega.position,
+        kappa=kappa.kappa.position,
+        kphi=kappa.kphi.position,
+        tth=kappa.tth.position,
+        wavelength=kappa.calc.wavelength,
+        energy=kappa.calc.energy * 10,   # FIXME: calc module uses NM_KEV but should be A_KEV instead
+        mode=kappa.calc.engine.mode,
+        sample=kappa.calc.sample.name,
+        hkl_engine=kappa.engine.name,
+        diffractometer_geometry="K4CV",
+    )
+    yield from bp.scan(detectors, kappa.l, 0.5, 1.5, 11, md=md)
