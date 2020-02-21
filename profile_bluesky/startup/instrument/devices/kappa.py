@@ -24,9 +24,6 @@ from .diffractometer import AxisConstraints
 from .diffractometer import DiffractometerMixin
 from .scaler import I0Mon, diode, scint
 
-AxisConstraints = collections.namedtuple(
-    "AxisConstraints", 
-    "low_limit high_limit value fit".split())
 
 # for more configuration ideas, see
 # https://github.com/prjemian/ipython_poof/blob/23db4dd2b00b780a9f021953f4bbf43bfdb78aa6/profile_bluesky/startup/16-tardis.py
@@ -54,8 +51,9 @@ class KappaDiffractometer(DiffractometerMixin, K4CV):
             axis.move(0)
 
 kappa = KappaDiffractometer('', name='kappa')
-logger.info(f"{kappa.name} modes: {kappa.engine.modes}")
 kappa.calc.engine.mode = kappa.engine.modes[0]
+
+logger.info(f"{kappa.name} modes: {kappa.engine.modes}")
 logger.info(f"selected mode: {kappa.calc.engine.mode}")
 
 # define some constraints in a dictionary
@@ -65,23 +63,15 @@ diffractometer_constraints = {
     "tth": AxisConstraints(-91, 91, 0, True),
     
     # we don't have these axes. Fix them to 0
-    "phi": AxisConstraints(0, 0, 0, False),
-    "chi": AxisConstraints(0, 0, 0, False),
-    "omega": AxisConstraints(0, 0, 0, False),    #kappa.omega.position.real
+    "kphi": AxisConstraints(0, 0, 0, False),
+    "komega": AxisConstraints(0, 0, 0, False),    #kappa.omega.position.real
     
     # # Attention naming convention inverted at the detector stages!
     # "delta": AxisConstraints(-5, 180, 0, True),
     # "gamma": AxisConstraints(-5, 180, 0, True),
 }
 
-# FIXME: TypeError: argument of type 'NoneType' is not iterable
-# when setting the first limits constraint
-# # apply constraints from our dictionary
-# for axis, constraints in diffractometer_constraints.items():
-#     kappa.calc[axis].limits = (constraints.low_limit, constraints.high_limit)
-#     kappa.calc[axis].value = constraints.value
-#     kappa.calc[axis].fit = constraints.fit
-
+kappa.applyConstraints(diffractometer_constraints)
 
 # define a crystal by its lattice
 kappa.calc.new_sample('cubic_sample', 
@@ -91,4 +81,4 @@ kappa.calc.new_sample('cubic_sample',
 
 # calculate using the default UB matrix
 
-print(kappa.calc.forward((1, 0, 0)))
+logger.info(kappa.forwardSolutionsTable([(1, 0, 0)]))
