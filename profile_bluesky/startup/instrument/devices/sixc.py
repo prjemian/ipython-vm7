@@ -84,7 +84,7 @@ class SixCircleDiffractometer(DiffractometerMixin, E6C):
             axis.move(0)
 
 
-sixc = SixCircleDiffractometer('', name='sixc')
+sixc = SixCircleDiffractometer('', name='sixc', , labels=("diffractometer", "sixc"))
 
 
 def sixc_example():
@@ -148,6 +148,7 @@ def sixc_example_plan():
         ]
 
     # add scan metadata
+    geom = sixc.calc.__class__.__name__.lstrip("Calc")
     md = dict(
         mu=sixc.mu.position,
         omega=sixc.omega.position,
@@ -160,6 +161,6 @@ def sixc_example_plan():
         mode=sixc.calc.engine.mode,
         sample=sixc.calc.sample.name,
         hkl_engine=sixc.engine.name,
-        diffractometer_geometry="E6C",
+        diffractometer_geometry=geom,
     )
     yield from bp.scan(detectors, sixc.l, 0.5, 1.5, 11, md=md)

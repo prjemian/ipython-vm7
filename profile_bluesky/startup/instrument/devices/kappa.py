@@ -55,7 +55,7 @@ class KappaDiffractometer(DiffractometerMixin, K4CV):
         for axis in (self.komega, self.kappa, self.kphi, self.tth):
             axis.move(0)
 
-kappa = KappaDiffractometer('', name='kappa')
+kappa = KappaDiffractometer('', name='kappa', labels=("diffractometer", "kappa"))
 kappa.calc.engine.mode = kappa.engine.modes[0]
 
 logger.info(f"{kappa.name} modes: {kappa.engine.modes}")
@@ -102,6 +102,7 @@ def kappa_example_plan():
         ]
 
     # add scan metadata
+    geom = kappa.calc.__class__.__name__.lstrip("Calc")
     md = dict(
         komega=kappa.komega.position,
         kappa=kappa.kappa.position,
@@ -112,6 +113,6 @@ def kappa_example_plan():
         mode=kappa.calc.engine.mode,
         sample=kappa.calc.sample.name,
         hkl_engine=kappa.engine.name,
-        diffractometer_geometry="K4CV",
+        diffractometer_geometry=geom,
     )
     yield from bp.scan(detectors, kappa.l, 0.5, 1.5, 11, md=md)

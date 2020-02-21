@@ -61,7 +61,7 @@ class FourCircleDiffractometer(DiffractometerMixin, E4CV):
             axis.move(0)
 
 
-fourc = FourCircleDiffractometer('', name='fourc')
+fourc = FourCircleDiffractometer('', name='fourc', labels=("diffractometer", "fourc"))
 fourc.calc.engine.mode = fourc.engine.modes[0]  # 'bissector' - constrain tth = 2 * omega
 
 logger.info(f"{fourc.name} modes: {fourc.engine.modes}")
