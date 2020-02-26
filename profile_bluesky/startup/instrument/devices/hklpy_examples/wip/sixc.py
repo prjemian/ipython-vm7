@@ -55,9 +55,8 @@ from ophyd import Component
 from ophyd import PseudoSingle
 from ophyd import SoftPositioner
 
-from .diffractometer import AxisConstraints
-from .diffractometer import DiffractometerMixin
-from .scaler import I0Mon, diode, scint
+from apstools.diffractometer import Constraints, DiffractometerMixin
+# from .scaler import I0Mon, diode, scint
 
 
 class SixCircleDiffractometer(DiffractometerMixin, E6C):
@@ -144,7 +143,7 @@ def sixc_example_plan():
 
     detectors = [
         sixc.h, sixc.k, sixc.l,
-        I0Mon, diode, scint,
+        # I0Mon, diode, scint,
         ]
 
     # add scan metadata

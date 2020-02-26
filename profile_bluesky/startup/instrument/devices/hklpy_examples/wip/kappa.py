@@ -25,9 +25,9 @@ from ophyd import EpicsMotor
 from ophyd import PseudoSingle
 from ophyd import SoftPositioner
 
-from .diffractometer import AxisConstraints
-from .diffractometer import DiffractometerMixin
-from .scaler import I0Mon, diode, scint
+from apstools.diffractometer import Constraints, DiffractometerMixin
+
+# from .scaler import I0Mon, diode, scint
 
 
 # for more configuration ideas, see
@@ -98,7 +98,7 @@ def kappa_example_plan():
 
     detectors = [
         kappa.h, kappa.k, kappa.l,
-        I0Mon, diode, scint,
+        # I0Mon, diode, scint,
         ]
 
     # add scan metadata

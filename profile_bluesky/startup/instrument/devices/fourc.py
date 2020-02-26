@@ -25,7 +25,7 @@ from ophyd import Component
 from ophyd import PseudoSingle
 from ophyd import SoftPositioner
 
-from .diffractometer import DiffractometerMixin
+from apstools.diffractometer import DiffractometerMixin
 
 
 class FourCircleDiffractometer(DiffractometerMixin, E4CV):
