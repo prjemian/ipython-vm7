@@ -9,7 +9,3 @@ from .signals import *
 from .simdet import *
 from .simulators import *
 from .sky_ioc import *
-
-# from .fourc import *
-# from .kappa import *
-# from .sixc import *
