@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export CONDA_ACTIVATE=/home/mintadmin/Apps/anaconda/bin/activate
-export CONDA_ENVIRONMENT=bluesky
+export CONDA_ACTIVATE=${HOME}/Apps/miniconda3/bin/activate
+export CONDA_ENVIRONMENT=bluesky_2020_1
 
 export IPYTHON_PROFILE=bluesky
 export IPYTHONDIR=~/.ipython
