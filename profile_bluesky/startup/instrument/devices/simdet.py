@@ -103,7 +103,7 @@ try:
     # bluesky chooses file names with this detector
     adsimdet = MySingleTriggerSimDetector(_ad_prefix, name='adsimdet')
     adsimdet.read_attrs.append("hdf1")
-    if adsimdet.hdf1.create_directory_depth.value == 0:
+    if adsimdet.hdf1.create_directory_depth.get() == 0:
         # probably not set, so let's set it now to some default
         adsimdet.hdf1.create_directory_depth.put(-5)
 except TimeoutError:
@@ -113,13 +113,13 @@ try:
     # EPICS chooses file names with this detector
     altsimdet = MyRenegadeSimDetector(_ad_prefix, name='altsimdet')
     altsimdet.read_attrs.append("hdf1")
-    if altsimdet.hdf1.create_directory_depth.value == 0:
+    if altsimdet.hdf1.create_directory_depth.get() == 0:
         # set it now to some default
         altsimdet.hdf1.create_directory_depth.put(-5)
     altsimdet.hdf1.file_path.put(WRITE_HDF5_FILE_PATH)
     altsimdet.hdf1.file_name.put("navy")
     altsimdet.hdf1.file_number.put(101)
-    altsimdet.hdf1.array_counter.put(altsimdet.hdf1.file_number.value)
+    altsimdet.hdf1.array_counter.put(altsimdet.hdf1.file_number.get())
 
 except TimeoutError:
     logger.error(f"Could not connect {_ad_prefix} sim detector as 'altsimdet'")
