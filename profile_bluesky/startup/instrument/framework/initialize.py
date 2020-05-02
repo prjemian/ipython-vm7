@@ -14,10 +14,32 @@ __all__ = [
 from ..session_logs import logger
 logger.info(__file__)
 
-# Set up a RunEngine and use metadata backed by a sqlite file.
+import IPython
+import os
 from bluesky import RunEngine
+from bluesky.utils import PersistentDict
+
+sh = IPython.get_ipython()
+profile_path = os.path.join(sh.profile_dir.startup_dir, "..")
+history_path = os.path.join(profile_path, "history")
+
+# check if we need to transition from SQLite-backed historydict
+old_md = None
+if not os.path.exists(history_path):
+    logger.info(
+        "Updating to PersistentDict-style history: %s", 
+        history_path)
+    os.makedirs(history_path)
+    from bluesky.utils import get_history
+    old_md = get_history()
+
+# Set up a RunEngine and use metadata backed by a sqlite file.
 from bluesky.utils import get_history
-RE = RunEngine(get_history())
+RE = RunEngine({})
+RE.md = PersistentDict(history_path)
+if old_md is not None:
+    logger.info("migrating history to PersistentDict")
+    RE.md.update(old_md)
 
 # keep track of callback subscriptions
 callback_db = {}

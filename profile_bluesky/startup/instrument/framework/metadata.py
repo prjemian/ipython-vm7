@@ -36,12 +36,12 @@ RE.md['login_id'] = USERNAME + '@' + HOSTNAME
 
 # useful diagnostic to record with all data
 RE.md['versions'] = {}
-RE.md['versions']['bluesky'] = bluesky.__version__
-RE.md['versions']['ophyd'] = ophyd.__version__
-RE.md['versions']['databroker'] = databroker.__version__
 RE.md['versions']['apstools'] = apstools.__version__
+RE.md['versions']['bluesky'] = bluesky.__version__
+RE.md['versions']['databroker'] = databroker.__version__
 RE.md['versions']['epics'] = epics.__version__
-RE.md['versions']['numpy'] = numpy.__version__
 RE.md['versions']['matplotlib'] = matplotlib.__version__
-RE.md['versions']['spec2nexus'] = spec2nexus.__version__
+RE.md['versions']['numpy'] = numpy.__version__
+RE.md['versions']['ophyd'] = ophyd.__version__
 RE.md['versions']['pyRestTable'] = pyRestTable.__version__
+RE.md['versions']['spec2nexus'] = spec2nexus.__version__
