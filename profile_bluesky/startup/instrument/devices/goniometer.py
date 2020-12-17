@@ -7,7 +7,7 @@ simulate as stepper motors
 
 __all__ = ['goniometer',]
 
-from instrument.session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 from apstools.devices import EpicsMotorLimitsMixin
