@@ -1,5 +1,3 @@
-
-
 """Four circle diffractometer (simulated)"""
 
 __all__ = [
@@ -7,32 +5,32 @@ __all__ = [
 ]
 
 from ..session_logs import logger
+
 logger.info(__file__)
 
 import gi
-gi.require_version('Hkl', '5.0')
-from hkl.diffract import E4CV, E4CH  #this works for mu=0
-from hkl.util import Lattice
 
-from bluesky import plans as bp
+gi.require_version("Hkl", "5.0")
+
+from apstools.diffractometer import DiffractometerMixin
 from bluesky import plan_stubs as bps
-
+from bluesky import plans as bp
+from hkl.diffract import E4CV
+from hkl.util import Lattice
 from ophyd import Component
 from ophyd import PseudoSingle
 from ophyd import SoftPositioner
 
-from apstools.diffractometer import DiffractometerMixin
-
 
 class FourCircleDiffractometer(DiffractometerMixin, E4CV):
-    h = Component(PseudoSingle, '', labels=("hkl", "fourc"))
-    k = Component(PseudoSingle, '', labels=("hkl", "fourc"))
-    l = Component(PseudoSingle, '', labels=("hkl", "fourc"))
+    h = Component(PseudoSingle, "", labels=("hkl", "fourc"), kind="hinted")
+    k = Component(PseudoSingle, "", labels=("hkl", "fourc"), kind="hinted")
+    l = Component(PseudoSingle, "", labels=("hkl", "fourc"), kind="hinted")
 
-    omega = Component(SoftPositioner, labels=("motor", "fourc"))
-    chi   = Component(SoftPositioner, labels=("motor", "fourc"))
-    phi   = Component(SoftPositioner, labels=("motor", "fourc"))
-    tth   = Component(SoftPositioner, labels=("motor", "fourc"))
+    omega = Component(SoftPositioner, labels=("motor", "fourc"), kind="hinted")
+    chi = Component(SoftPositioner, labels=("motor", "fourc"), kind="hinted")
+    phi = Component(SoftPositioner, labels=("motor", "fourc"), kind="hinted")
+    tth = Component(SoftPositioner, labels=("motor", "fourc"), kind="hinted")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,4 +42,4 @@ class FourCircleDiffractometer(DiffractometerMixin, E4CV):
             axis.move(0)
 
 
-fourc = FourCircleDiffractometer('', name='fourc', labels=("diffractometer", "fourc"))
+fourc = FourCircleDiffractometer("", name="fourc", labels=("diffractometer", "fourc"))
