@@ -25,6 +25,48 @@ __all__ = """
     setor
     showSample
     showSelectedDiffractometer
+
+EXAMPLES::
+
+    In [1]: %run -m hkl_user
+    I Thu-23:02:52 - /home/mintadmin/.ipython/user/hkl_user.py
+
+    In [2]: selectDiffractometer(fourc)
+
+    In [3]: showSelectedDiffractometer()
+    fourc
+
+    In [4]: newSample("silicon", 5.431, 5.431, 5.431, 90, 90, 90)
+    HklSample(name='silicon', lattice=LatticeTuple(a=5.431, b=5.431, c=5.431, alpha=90.0, beta=90.0, gamma=90.0), ux=Parameter(name='None (internally: ux)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uy=Parameter(name='None (internally: uy)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uz=Parameter(name='None (internally: uz)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), U=array([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]]), UB=array([[ 1.15691131e+00, -7.08403864e-17, -7.08403864e-17],
+        [ 0.00000000e+00,  1.15691131e+00, -7.08403864e-17],
+        [ 0.00000000e+00,  0.00000000e+00,  1.15691131e+00]]), reflections=[], reflection_measured_angles=array([], shape=(0, 0), dtype=float64), reflection_theoretical_angles=array([], shape=(0, 0), dtype=float64))
+
+    In [5]: showSample()
+    HklSample(name='silicon', lattice=LatticeTuple(a=5.431, b=5.431, c=5.431, alpha=90.0, beta=90.0, gamma=90.0), ux=Parameter(name='None (internally: ux)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uy=Parameter(name='None (internally: uy)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uz=Parameter(name='None (internally: uz)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), U=array([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]]), UB=array([[ 1.15691131e+00, -7.08403864e-17, -7.08403864e-17],
+        [ 0.00000000e+00,  1.15691131e+00, -7.08403864e-17],
+        [ 0.00000000e+00,  0.00000000e+00,  1.15691131e+00]]), reflections=[], reflection_measured_angles=array([], shape=(0, 0), dtype=float64), reflection_theoretical_angles=array([], shape=(0, 0), dtype=float64))
+
+    In [6]: listSamples()
+    HklSample(name='main', lattice=LatticeTuple(a=1.54, b=1.54, c=1.54, alpha=90.0, beta=90.0, gamma=90.0), ux=Parameter(name='None (internally: ux)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uy=Parameter(name='None (internally: uy)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uz=Parameter(name='None (internally: uz)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), U=array([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]]), UB=array([[ 4.07999046e+00, -2.49827363e-16, -2.49827363e-16],
+        [ 0.00000000e+00,  4.07999046e+00, -2.49827363e-16],
+        [ 0.00000000e+00,  0.00000000e+00,  4.07999046e+00]]), reflections=[], reflection_measured_angles=array([], shape=(0, 0), dtype=float64), reflection_theoretical_angles=array([], shape=(0, 0), dtype=float64))
+    HklSample(name='silicon', lattice=LatticeTuple(a=5.431, b=5.431, c=5.431, alpha=90.0, beta=90.0, gamma=90.0), ux=Parameter(name='None (internally: ux)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uy=Parameter(name='None (internally: uy)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), uz=Parameter(name='None (internally: uz)', limits=(min=-180.0, max=180.0), value=0.0, fit=True, inverted=False, units='Degree'), U=array([[1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.]]), UB=array([[ 1.15691131e+00, -7.08403864e-17, -7.08403864e-17],
+        [ 0.00000000e+00,  1.15691131e+00, -7.08403864e-17],
+        [ 0.00000000e+00,  0.00000000e+00,  1.15691131e+00]]), reflections=[], reflection_measured_angles=array([], shape=(0, 0), dtype=float64), reflection_theoretical_angles=array([], shape=(0, 0), dtype=float64))
+
+    In [7]: %mov fourc.omega -145.451 fourc.chi 90 fourc.phi 0 fourc.tth 69.0966
+
+    In [8]: r2 = setor(0, 4, 0)
+
+
 """.split()
 
 from instrument.session_logs import logger
